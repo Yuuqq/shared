@@ -46,12 +46,15 @@
     btn.type = "button";
     btn.style.cssText = [
       "position:fixed", "top:12px", "right:12px", "z-index:9999",
-      "width:40px", "height:40px", "border-radius:50%",
-      "border:1px solid var(--line)", "background:var(--card)",
-      "color:var(--ink)", "font-size:20px", "cursor:pointer",
+      "width:44px", "height:44px", "border-radius:50%",
+      "border:2px solid var(--line)", "background:var(--card)",
+      "color:var(--ink)", "font-size:22px", "cursor:pointer",
       "display:flex", "align-items:center", "justify-content:center",
-      "box-shadow:var(--shadow-card)", "transition:all .2s ease"
+      "box-shadow:0 2px 8px rgba(0,0,0,0.15)", "transition:all .2s ease",
+      "line-height:1", "padding:0"
     ].join(";");
+    btn.addEventListener("mouseenter", function() { btn.style.transform = "scale(1.1)"; });
+    btn.addEventListener("mouseleave", function() { btn.style.transform = "scale(1)"; });
     btn.addEventListener("click", function () {
       const current = document.documentElement.getAttribute("data-theme") || getPreferred();
       applyTheme(current === "dark" ? "light" : "dark");
