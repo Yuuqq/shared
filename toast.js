@@ -14,6 +14,10 @@
     if (container) return container;
     container = document.createElement("div");
     container.id = "toastContainer";
+    container.setAttribute("role", "region");
+    container.setAttribute("aria-label", "页面消息");
+    container.setAttribute("aria-live", "polite");
+    container.setAttribute("aria-relevant", "additions");
     container.style.cssText = [
       "position:fixed", "top:56px", "right:16px", "z-index:99998",
       "display:flex", "flex-direction:column", "gap:8px",
@@ -39,6 +43,10 @@
     ensureContainer();
 
     const toast = document.createElement("div");
+    const isAssertive = type === "error" || type === "warn";
+    toast.setAttribute("role", isAssertive ? "alert" : "status");
+    toast.setAttribute("aria-live", isAssertive ? "assertive" : "polite");
+    toast.setAttribute("aria-atomic", "true");
     toast.style.cssText = [
       `background:${c.bg}`, `border-left:4px solid ${c.border}`,
       "padding:10px 14px", "border-radius:8px", "font-size:13px",
@@ -49,7 +57,7 @@
       "font-family:var(--font-sans,system-ui)"
     ].join(";");
 
-    toast.innerHTML = `<span>${ICONS[type] || ""}</span><span style="flex:1">${message}</span><span style="opacity:0.4;font-size:11px">✕</span>`;
+    toast.innerHTML = `<span aria-hidden="true">${ICONS[type] || ""}</span><span style="flex:1">${message}</span><span aria-hidden="true" style="opacity:0.4;font-size:11px">✕</span>`;
     toast.addEventListener("click", () => removeToast(toast));
 
     container.appendChild(toast);
