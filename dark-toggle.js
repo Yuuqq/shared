@@ -140,8 +140,13 @@
     // tools' own hero action buttons (教程 / 重置 / 导出 etc.). Moving
     // both floating UI to the bottom-right column keeps page content
     // clear of permanent overlays.
+    // iOS safe-area: home indicator can overlap bottom 34px on iPhone X+,
+    // so add env() inset (falls back to 0 on non-iOS browsers).
     btn.style.cssText = [
-      "position:fixed", "bottom:72px", "right:16px", "z-index:9999",
+      "position:fixed",
+      "bottom:calc(72px + env(safe-area-inset-bottom, 0px))",
+      "right:calc(16px + env(safe-area-inset-right, 0px))",
+      "z-index:9999",
       "width:44px", "height:44px", "border-radius:50%",
       "border:2px solid var(--line)", "background:var(--card)",
       "color:var(--ink)", "font-size:22px", "cursor:pointer",
@@ -153,8 +158,8 @@
     // Mobile: tighter spacing to mirror gnav-fab's @media (max-width:600px)
     // override (which uses bottom:12 right:12).
     if (window.matchMedia && window.matchMedia("(max-width: 600px)").matches) {
-      btn.style.bottom = "68px";
-      btn.style.right = "12px";
+      btn.style.bottom = "calc(68px + env(safe-area-inset-bottom, 0px))";
+      btn.style.right = "calc(12px + env(safe-area-inset-right, 0px))";
     }
 
     // Hide both floating widgets in print to avoid them appearing in PDFs
