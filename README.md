@@ -68,8 +68,30 @@ This insulates your tool from future shared/ changes. Bump the path
 when you've validated the new release. See [CHANGELOG.md](./CHANGELOG.md)
 for available versions.
 
-> 🚧 **Q1-B coming**: a single `loader.js` will replace the per-module
-> script tags above. See [ROADMAP.md § Q1-B](./ROADMAP.md#q1-b--加载脚本归一化--p1).
+### Single-entry-point loader (v2.6+, recommended for new tools)
+
+```html
+<script src="../shared/releases/v2.6/loader.js"
+        data-modules="dark,nav,onboarding,toast,autosave,url-state"></script>
+```
+
+One line replaces the 6 individual `<script>` tags above.
+`design-tokens.css` is auto-injected. Modules load in declaration order
+with per-module error isolation. Inspect runtime status:
+
+```js
+window.Shared.loader.ready.then(status => console.log(status));
+// → { dark: "loaded", nav: "loaded", toast: "loaded", ... }
+```
+
+Available module short-names:
+`dark` · `nav` · `onboarding` · `toast` · `autosave` · `url-state`
+· `export-png` · `cmd` · `kbd`. See [CHANGELOG v2.6.0](./CHANGELOG.md#v260--2026-05-03--q1-b-loader-infrastructure)
+for full API.
+
+ESM variant available at `loader.mjs` with `import { load } from` API.
+
+> ✅ **As of v2.6.0**, a single `loader.js` is available — see below.
 
 ---
 

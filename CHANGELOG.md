@@ -13,6 +13,62 @@ Versioning follows [SemVer](https://semver.org/).
 
 ---
 
+## [v2.6.0] – 2026-05-03 — *Q1-B loader infrastructure*
+
+This release introduces the **single-entry-point loader** that consolidates
+the 16 different shared-script include patterns observed across 51 tools
+into 1 canonical pattern. Tools can migrate at their own pace; v2.5.x
+script-tag inclusion remains fully supported.
+
+### Added
+- **`loader.js`** — single-entry-point loader for shared modules.
+  Reads `data-modules="..."` attribute from its own script tag and
+  injects the listed modules in declaration order.
+  - Per-module error isolation (one failure does not block the rest)
+  - Auto-injects `design-tokens.css` when `data-tokens="auto"` (default)
+  - Idempotent — re-running is a no-op
+  - Exposes `window.Shared.loader` with `{ version, base, status, errors, ready, map }`
+  - Dispatches `shared:loader:ready` custom event when all modules settle
+  - Vanilla JS, no build, no dependencies (~5 KB)
+- **`loader.mjs`** — ESM variant with the same registry and behavior,
+  exporting an async `load(modules, opts)` function for tools that prefer
+  programmatic loading over script-tag declaration.
+- **`releases/v2.6/`** — second archived snapshot.
+- Module short-name map shipped with both variants:
+  `dark | nav | onboarding | toast | autosave | url-state | export-png | cmd | kbd`
+
+### Migration (opt-in, no rush)
+
+Old (still works):
+```html
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<script defer src="../shared/dark-toggle.js"></script>
+<script defer src="../shared/global-nav.js"></script>
+<script defer src="../shared/onboarding.js"></script>
+<script defer src="../shared/toast.js"></script>
+<script defer src="../shared/autosave.js"></script>
+<script defer src="../shared/url-state.js"></script>
+```
+
+New (recommended for new tools):
+```html
+<script src="../shared/releases/v2.6/loader.js"
+        data-modules="dark,nav,onboarding,toast,autosave,url-state"></script>
+```
+
+7 lines → 1 line. Tokens auto-injected.
+
+### Verified
+- 13 assertions across 7 test cases pass:
+  module map correctness · version exposure · base path resolution ·
+  declaration order · per-module error isolation · unknown-id handling ·
+  `data-tokens=auto`/`off` modes · idempotency.
+
+### Changed
+- *(no breaking changes — fully backwards compatible)*
+
+---
+
 ## [v2.5.0] – 2026-05-03 — *baseline release for the 12-month roadmap*
 
 This release packages every fix and polish layer accumulated over the
