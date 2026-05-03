@@ -1,7 +1,9 @@
 /**
  * 共享设计令牌 — 50 个新闻工具统一视觉规范
+ * 本文件为 P00-dashboard 的本地副本，用于保持仓库自包含。
+ * 若上游 shared 版本更新，需要按需同步这里的实现。
  * 各项目在 styles.css 中可覆盖 :root 变量实现局部定制。
- * 引入方式：<link rel="stylesheet" href="../shared/design-tokens.css" />
+ * 引入方式：<link rel="stylesheet" href="./shared/design-tokens.css" />
  */
 
 /* ===== Light Mode ===== */
@@ -401,4 +403,197 @@ details.teach-card[open] > *:not(summary) {
     }
 
     button { border: 1px solid #999; }
+}
+
+/* =====================================================================
+ * v2.1 设计迭代（2026-05）— 全部使用 :where() 零特异性，向后兼容
+ * 不覆盖任何工具已有的样式，仅为未显式声明者提供基线。
+ * ===================================================================== */
+
+/* ---- 1. 让操作系统级 UI（滚动条、表单控件、文本选区）自动跟随主题 ---- */
+html { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+
+/* ---- 2. prefers-reduced-motion: 尊重用户系统偏好，关闭非必要动效 ---- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    main, .app { animation: none !important; }
+}
+
+/* ---- 3. 媒体元素响应式安全网（图、SVG、视频、画布永远不溢出容器） ---- */
+:where(img, svg, video, canvas, picture) {
+    max-width: 100%;
+    height: auto;
+}
+:where(canvas) { /* canvas 不能 height:auto，避免压扁 */
+    height: revert;
+}
+
+/* ---- 4. 排版基线（仅在工具未自定义时生效） ---- */
+:where(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.25;
+    text-wrap: balance;        /* 标题更平衡 */
+    overflow-wrap: break-word;
+}
+:where(p, li) {
+    text-wrap: pretty;          /* 正文避免单字孤行 */
+}
+:where(p) { margin-block: 0.6em; }
+:where(ul, ol) { padding-inline-start: 1.5em; }
+
+/* ---- 5. 焦点环光晕（仅追加，不改原 3px outline；用 :where() 零特异性） ---- */
+:where(:focus-visible) {
+    box-shadow: 0 0 0 5px var(--accent-light);
+}
+
+/* ---- 6. 跳转锚点偏移（避免 sticky header 遮挡） ---- */
+:where([id]) { scroll-margin-top: var(--anchor-offset, 0px); }
+
+/* ---- 7. Skip Link（工具可选用）—— 在 <body> 顶部加 .skip-link 即可启用 ---- */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 8px;
+    z-index: 9999;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    transition: top 0.2s ease;
+}
+.skip-link:focus {
+    top: 8px;
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+}
+
+/* ---- 8. 减少 FOUC：文档加载完成前微淡出 ---- */
+html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
+
+/* ---- 9. 触屏设备：按钮最小 44×44 命中区（Apple HIG / WCAG 2.5.5） ---- */
+@media (hover: none) and (pointer: coarse) {
+    :where(button, .btn, [role="button"], a.btn) {
+        min-height: 44px;
+        /* min-width intentionally omitted: dense horizontal toolbars must keep flowing.
+           Tools that want square hit targets can opt in via .touch-square class. */
+    }
+    :where(.touch-square) { min-width: 44px; }
+}
+
+/* ---- 10. 链接默认带下划线偏移 + 颜色继承，更可读 ---- */
+:where(a:not(.btn):not(.skip-link)) {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+:where(a:not(.btn):not(.skip-link)):hover {
+    text-decoration-thickness: 2px;
+}
+
+/* ---- 11. 表格基线（多个工具用了 <table> 但没样式） ---- */
+:where(table) {
+    border-collapse: collapse;
+    width: 100%;
+}
+:where(th, td) {
+    padding: 8px 12px;
+    text-align: start;
+    border-bottom: 1px solid var(--line);
+}
+:where(th) {
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--bg);
+}
+
+/* ---- 12. 暗色模式高对比度模式备援 ---- */
+@media (prefers-contrast: more) {
+    :root {
+        --line: var(--ink-secondary);
+        --shadow-card: 0 0 0 1px var(--ink);
+    }
+}
+
+/* ---- 13. 打印模式增强（隐藏更多浮动元素） ---- */
+@media print {
+    .skip-link,
+    [aria-hidden="true"] { display: none !important; }
+    :where(h1, h2, h3) { page-break-after: avoid; }
+    :where(img, table, pre, blockquote) { page-break-inside: avoid; }
+}
+
+/* =====================================================================
+ * v2.2 字体节奏（2026-05）— 统一 type scale + 行高 + 字距 tokens
+ * 所有规则均用 :where() 零特异性，工具的显式 font-size 永远优先。
+ * 各工具可选用 var(--text-xx) / var(--leading-xx) / var(--tracking-xx)。
+ * ===================================================================== */
+:root {
+    /* Type scale (1.125 minor third)，rem 基于 16px */
+    --text-xs:   0.75rem;    /* 12px — 元信息、徽章 */
+    --text-sm:   0.85rem;    /* 13.6px — 副标签、表格 */
+    --text-base: 0.95rem;    /* 15.2px — 正文 */
+    --text-md:   1rem;       /* 16px — 强调正文 */
+    --text-lg:   1.125rem;   /* 18px — 小标题 */
+    --text-xl:   1.4rem;     /* 22.4px — h2 */
+    --text-2xl:  1.75rem;    /* 28px — h1 紧凑 */
+    --text-hero: clamp(1.6rem, 3.2vw, 2.4rem); /* 流式 hero */
+
+    /* Leading */
+    --leading-tight:    1.2;   /* 标题 */
+    --leading-snug:     1.4;   /* 子标题 / 短行 */
+    --leading-normal:   1.6;   /* 正文（默认） */
+    --leading-relaxed:  1.75;  /* 长篇阅读 */
+
+    /* Tracking */
+    --tracking-tight:  -0.02em; /* 大标题 */
+    --tracking-normal: 0;
+    --tracking-wide:   0.04em;  /* 全大写小标签 */
+}
+
+/* 默认排版基线（零特异性，工具自定义会自动胜出） */
+:where(body) {
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+}
+:where(h1) {
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-block: 0 var(--space-sm, 8px);
+}
+:where(.hero h1, h1.hero, h1.gradient) {
+    font-size: var(--text-hero);
+}
+:where(h2) {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    margin-block: var(--space-md, 16px) var(--space-sm, 8px);
+}
+:where(h3) {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    margin-block: var(--space-md, 16px) var(--space-xs, 4px);
+}
+:where(h4, h5, h6) {
+    font-size: var(--text-md);
+    line-height: var(--leading-snug);
+}
+:where(small, .small, .caption) {
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+}
+:where(label) {
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
 }
