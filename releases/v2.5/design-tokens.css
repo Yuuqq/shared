@@ -1,0 +1,774 @@
+/**
+ * 共享设计令牌 — 50 个新闻工具统一视觉规范
+ * 本文件为 P00-dashboard 的本地副本，用于保持仓库自包含。
+ * 若上游 shared 版本更新，需要按需同步这里的实现。
+ * 各项目在 styles.css 中可覆盖 :root 变量实现局部定制。
+ * 引入方式：<link rel="stylesheet" href="./shared/design-tokens.css" />
+ */
+
+/* ===== Light Mode ===== */
+:root {
+    /* 基础色 */
+    --bg: #f4f0e8;
+    --card: #ffffff;
+    --ink: #1a1a1a;
+    --ink-secondary: #4a4a4a;
+    --line: #e0d8cc;
+
+    /* 品牌强调色 */
+    --accent: #c7491f;
+    --accent-hover: #a63a18;
+    --accent-light: rgba(199, 73, 31, 0.08);
+
+    /* 功能色 */
+    --ok: #0b7a3b;
+    --ok-light: #e8f5ee;
+    --warn: #b86e00;
+    --warn-light: #fef7e0;
+    --bad: #a61f12;
+    --bad-light: #fdecea;
+
+    /* 排版 */
+    --font-sans: "IBM Plex Sans", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+    --font-serif: "IBM Plex Serif", "Source Han Serif SC", "Noto Serif SC", serif;
+    --font-mono: "IBM Plex Mono", "Fira Code", "Menlo", monospace;
+
+    /* 间距 */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+
+    /* 圆角 */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-pill: 999px;
+
+    /* 阴影 */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Dark Mode (auto + manual toggle) ===== */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #1a1a2e;
+        --card: #242438;
+        --ink: #e8e8f0;
+        --ink-secondary: #aaa;
+        --line: #3a3a50;
+
+        --accent: #ff7b54;
+        --accent-hover: #ff9268;
+        --accent-light: rgba(255, 123, 84, 0.12);
+
+        --ok: #4ade80;
+        --ok-light: rgba(74, 222, 128, 0.12);
+        --warn: #fbbf24;
+        --warn-light: rgba(251, 191, 36, 0.12);
+        --bad: #f87171;
+        --bad-light: rgba(248, 113, 113, 0.12);
+
+        --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Manual dark mode override */
+:root[data-theme="dark"] {
+    --bg: #1a1a2e;
+    --card: #242438;
+    --ink: #e8e8f0;
+    --ink-secondary: #aaa;
+    --line: #3a3a50;
+
+    --accent: #ff7b54;
+    --accent-hover: #ff9268;
+    --accent-light: rgba(255, 123, 84, 0.12);
+
+    --ok: #4ade80;
+    --ok-light: rgba(74, 222, 128, 0.12);
+    --warn: #fbbf24;
+    --warn-light: rgba(251, 191, 36, 0.12);
+    --bad: #f87171;
+    --bad-light: rgba(248, 113, 113, 0.12);
+
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Global Reset ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--bg);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* ===== Smooth Transitions (global) ===== */
+body, .card, .hero, button, input, select, textarea, a {
+    transition: background-color 0.25s ease, color 0.25s ease,
+                border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* ===== Focus Visible (a11y) ===== */
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-secondary); }
+@supports (scrollbar-width: thin) {
+    * { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+}
+
+/* ===== Text Selection ===== */
+::selection {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ===== Page Entrance Animation ===== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+main, .app {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+/* ===== Card System ===== */
+.card {
+    background: var(--card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* ===== Button System ===== */
+button, .btn, [type="button"], [type="submit"] {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: var(--accent);
+    color: #fff;
+    transition: transform 80ms ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+button:hover, .btn:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 2px 8px rgba(199, 73, 31, 0.25);
+}
+button:active, .btn:active {
+    transform: scale(0.97);
+}
+/* Ripple effect */
+button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%),
+        rgba(255,255,255,0.3) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+}
+button:active::after { opacity: 1; }
+
+.btn-secondary, .ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+}
+.btn-secondary:hover, .ghost:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: none;
+}
+
+/* ===== Input System ===== */
+input, textarea, select {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+    outline: none;
+}
+
+/* ===== Gradient Heading ===== */
+.hero h1, h1.gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--warn, #b86e00) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .hero h1,
+    :root:not([data-theme="light"]) h1.gradient {
+        background: linear-gradient(135deg, #ff7b54 0%, #fbbf24 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+}
+:root[data-theme="dark"] .hero h1,
+:root[data-theme="dark"] h1.gradient {
+    background: linear-gradient(135deg, #ff7b54 0%, #fbbf24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+/* ===== Glassmorphism Utility ===== */
+.glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+:root[data-theme="dark"] .glass {
+    background: rgba(36, 36, 56, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .glass {
+        background: rgba(36, 36, 56, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+}
+
+/* ===== Skeleton Loading ===== */
+.skeleton {
+    background: linear-gradient(90deg,
+        var(--line) 25%, rgba(255,255,255,0.4) 50%, var(--line) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease infinite;
+    border-radius: var(--radius-sm);
+}
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ===== Tooltip ===== */
+[data-tooltip] {
+    position: relative;
+}
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    background: var(--ink);
+    color: var(--bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s, transform 0.15s;
+    z-index: 100;
+}
+[data-tooltip]:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* ===== Badges ===== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.badge-accent { background: var(--accent-light); color: var(--accent); }
+.badge-ok { background: var(--ok-light); color: var(--ok); }
+.badge-warn { background: var(--warn-light); color: var(--warn); }
+.badge-bad { background: var(--bad-light); color: var(--bad); }
+
+/* ===== Teach Card Animation ===== */
+details.teach-card summary {
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+details.teach-card summary:hover { color: var(--accent); }
+details.teach-card[open] > *:not(summary) {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+    :root {
+        --space-lg: 16px;
+        --space-xl: 24px;
+    }
+    button { padding: 10px 16px; font-size: 0.85rem; }
+    .hero h1 { font-size: 1.4rem; }
+}
+
+/* ===== Common Utilities ===== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* ===== Print Stylesheet ===== */
+@media print {
+    /* Force light colors */
+    :root {
+        --bg: #fff !important;
+        --card: #fff !important;
+        --ink: #000 !important;
+        --ink-secondary: #333 !important;
+        --line: #ccc !important;
+        --shadow-card: none !important;
+        --shadow-hover: none !important;
+    }
+
+    /* Hide floating UI elements */
+    #darkToggleBtn,
+    #cmdPaletteOverlay,
+    #toastContainer,
+    #kbdHintBar,
+    .onboarding-ring,
+    .onboarding-tip,
+    .no-print,
+    nav[style],
+    [style*="position:fixed"] {
+        display: none !important;
+    }
+
+    /* Optimize for paper */
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+        background: #fff !important;
+    }
+
+    a { color: #000; text-decoration: underline; }
+    a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; opacity: 0.6; }
+    a[href^="#"]::after, a[href^="javascript"]::after { content: ""; }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+    }
+
+    button { border: 1px solid #999; }
+}
+
+/* =====================================================================
+ * v2.1 设计迭代（2026-05）— 全部使用 :where() 零特异性，向后兼容
+ * 不覆盖任何工具已有的样式，仅为未显式声明者提供基线。
+ * ===================================================================== */
+
+/* ---- 1. 让操作系统级 UI（滚动条、表单控件、文本选区）自动跟随主题 ---- */
+html { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+
+/* ---- 2. prefers-reduced-motion: 尊重用户系统偏好，关闭非必要动效 ---- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    main, .app { animation: none !important; }
+}
+
+/* ---- 3. 媒体元素响应式安全网（图、SVG、视频、画布永远不溢出容器） ---- */
+:where(img, svg, video, canvas, picture) {
+    max-width: 100%;
+    height: auto;
+}
+:where(canvas) { /* canvas 不能 height:auto，避免压扁 */
+    height: revert;
+}
+
+/* ---- 4. 排版基线（仅在工具未自定义时生效） ---- */
+:where(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.25;
+    text-wrap: balance;        /* 标题更平衡 */
+    overflow-wrap: break-word;
+}
+:where(p, li) {
+    text-wrap: pretty;          /* 正文避免单字孤行 */
+}
+:where(p) { margin-block: 0.6em; }
+:where(ul, ol) { padding-inline-start: 1.5em; }
+
+/* ---- 5. 焦点环光晕（仅追加，不改原 3px outline；用 :where() 零特异性） ---- */
+:where(:focus-visible) {
+    box-shadow: 0 0 0 5px var(--accent-light);
+}
+
+/* ---- 6. 跳转锚点偏移（避免 sticky header 遮挡） ---- */
+:where([id]) { scroll-margin-top: var(--anchor-offset, 0px); }
+
+/* ---- 7. Skip Link（工具可选用）—— 在 <body> 顶部加 .skip-link 即可启用 ---- */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 8px;
+    z-index: 9999;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    transition: top 0.2s ease;
+}
+.skip-link:focus {
+    top: 8px;
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+}
+
+/* ---- 8. 减少 FOUC：文档加载完成前微淡出 ---- */
+html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
+
+/* ---- 9. 触屏设备：按钮最小 44×44 命中区（Apple HIG / WCAG 2.5.5） ---- */
+@media (hover: none) and (pointer: coarse) {
+    :where(button, .btn, [role="button"], a.btn) {
+        min-height: 44px;
+        /* min-width intentionally omitted: dense horizontal toolbars must keep flowing.
+           Tools that want square hit targets can opt in via .touch-square class. */
+    }
+    :where(.touch-square) { min-width: 44px; }
+}
+
+/* ---- 10. 链接默认带下划线偏移 + 颜色继承，更可读 ---- */
+:where(a:not(.btn):not(.skip-link)) {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+:where(a:not(.btn):not(.skip-link)):hover {
+    text-decoration-thickness: 2px;
+}
+
+/* ---- 11. 表格基线（多个工具用了 <table> 但没样式） ---- */
+:where(table) {
+    border-collapse: collapse;
+    width: 100%;
+}
+:where(th, td) {
+    padding: 8px 12px;
+    text-align: start;
+    border-bottom: 1px solid var(--line);
+}
+:where(th) {
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--bg);
+}
+
+/* ---- 12. 暗色模式高对比度模式备援 ---- */
+@media (prefers-contrast: more) {
+    :root {
+        --line: var(--ink-secondary);
+        --shadow-card: 0 0 0 1px var(--ink);
+    }
+}
+
+/* ---- 13. 打印模式增强（隐藏更多浮动元素） ---- */
+@media print {
+    .skip-link,
+    [aria-hidden="true"] { display: none !important; }
+    :where(h1, h2, h3) { page-break-after: avoid; }
+    :where(img, table, pre, blockquote) { page-break-inside: avoid; }
+}
+
+/* =====================================================================
+ * v2.2 字体节奏（2026-05）— 统一 type scale + 行高 + 字距 tokens
+ * 所有规则均用 :where() 零特异性，工具的显式 font-size 永远优先。
+ * 各工具可选用 var(--text-xx) / var(--leading-xx) / var(--tracking-xx)。
+ * ===================================================================== */
+:root {
+    /* Type scale (1.125 minor third)，rem 基于 16px */
+    --text-xs:   0.75rem;    /* 12px — 元信息、徽章 */
+    --text-sm:   0.85rem;    /* 13.6px — 副标签、表格 */
+    --text-base: 1rem;       /* 16px — 正文（CJK 友好） */
+    --text-md:   1rem;       /* 16px — 强调正文 */
+    --text-lg:   1.125rem;   /* 18px — 小标题 */
+    --text-xl:   1.4rem;     /* 22.4px — h2 */
+    --text-2xl:  1.75rem;    /* 28px — h1 紧凑 */
+    --text-hero: clamp(1.6rem, 3.2vw, 2.4rem); /* 流式 hero */
+
+    /* Leading */
+    --leading-tight:    1.2;   /* 标题 */
+    --leading-snug:     1.4;   /* 子标题 / 短行 */
+    --leading-normal:   1.6;   /* 正文（默认） */
+    --leading-relaxed:  1.75;  /* 长篇阅读 */
+
+    /* Tracking */
+    --tracking-tight:  -0.02em; /* 大标题 */
+    --tracking-normal: 0;
+    --tracking-wide:   0.04em;  /* 全大写小标签 */
+}
+
+/* 默认排版基线 — 仅 body/label/small（这些值原本就高度趋同，不破坏 hierarchy） */
+/* 标题尺寸不强制：浏览器 UA 默认 (h2:1.5em / h3:1.17em) 与 :where(h2:1.4rem) 会冲突，
+   会让"未自定义标题"的工具悄悄变小，破坏视觉层级。改为 opt-in：
+   想统一标题节奏的工具在 <html> 上加 class="type-scale-v22"。 */
+:where(body) {
+    line-height: var(--leading-normal);
+}
+:where(small, .small, .caption) {
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+}
+:where(label) {
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+}
+
+/* Opt-in: <html class="type-scale-v22"> */
+:where(.type-scale-v22 body) {
+    font-size: var(--text-base);
+}
+:where(.type-scale-v22 h1) {
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-block: 0 var(--space-sm, 8px);
+}
+:where(.type-scale-v22 .hero h1, .type-scale-v22 h1.hero, .type-scale-v22 h1.gradient) {
+    font-size: var(--text-hero);
+}
+:where(.type-scale-v22 h2) {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    margin-block: var(--space-md, 16px) var(--space-sm, 8px);
+}
+:where(.type-scale-v22 h3) {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    margin-block: var(--space-md, 16px) var(--space-xs, 4px);
+}
+:where(.type-scale-v22 h4, .type-scale-v22 h5, .type-scale-v22 h6) {
+    font-size: var(--text-md);
+    line-height: var(--leading-snug);
+}
+
+/* CJK 友好：负字距对中文不利，强制中文区域 letter-spacing:0 */
+:where(:lang(zh)) :where(h1, h2, h3, h4, h5, h6) {
+    letter-spacing: 0;
+}
+
+/* =====================================================================
+ * v2.3 全局 UI 体验层（2026-05）— 应用 ui-ux-pro-max + frontend-design 优先级
+ * 全部用 :where() 零特异性，工具的自定义样式永远优先。
+ * 一次推送 Yuuqq/shared 即同时惠及 51 个工具。
+ * ===================================================================== */
+
+/* P1 Accessibility — 焦点环属性（被前面的非:where焦点规则正确覆盖；
+   保留作为没有自定义焦点样式的工具的兜底）。 */
+:where(:focus-visible) {
+    outline: 3px solid var(--accent, #2563eb);
+    outline-offset: 2px;
+    transition: outline-offset 0.12s ease;
+}
+:where(button:focus-visible, [role="button"]:focus-visible) {
+    outline-offset: 3px;
+}
+
+/* P6 Typography — 标题不再产生孤行；正文段落更易扫读 */
+:where(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+}
+:where(p, li, dd, blockquote) {
+    text-wrap: pretty;
+}
+
+/* P5 Layout — 锚点滚动到位时不被固定头遮挡 */
+:where(html) {
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+}
+@media (prefers-reduced-motion: reduce) {
+    :where(html) { scroll-behavior: auto; }
+}
+:where(:target, [id]:focus-visible) {
+    scroll-margin-top: 2rem;
+}
+
+/* P2 Touch & Interaction — 触摸/混合设备最小触摸高度 44px。
+   注意：仅设 min-height 不设 min-width — min-width:44px 会破坏紧凑工具栏
+   （ui-ux-pro-max P2 touch-spacing 8px 间距 vs touch-target-size 是互补关系，
+   不必在每个按钮上强制方形）。如需方形目标，在按钮上加 .square-target 类。 */
+@media (any-pointer: coarse) {
+    :where(button, [role="button"], a.btn, input[type="button"], input[type="submit"], input[type="reset"]) {
+        min-height: 44px;
+    }
+    :where(.touch-square, .square-target) {
+        /* .touch-square (v2.1) + .square-target (v2.3) — 同义别名，
+           v2.3 文档即承认两者一致；任一类名生效都强制 44px 方形热区。 */
+        min-width: 44px;
+    }
+    :where(input[type="checkbox"], input[type="radio"]) {
+        min-width: 20px;
+        min-height: 20px;
+    }
+}
+
+/* P8 Forms & Feedback — 统一表单基线，独立工具仍可覆写 */
+:where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select) {
+    font-family: inherit;
+    font-size: var(--text-base, 1rem);
+    line-height: var(--leading-snug, 1.4);
+}
+:where(input:focus-visible, textarea:focus-visible, select:focus-visible) {
+    outline: 2px solid var(--accent, #2563eb);
+    outline-offset: 1px;
+}
+:where(input:disabled, textarea:disabled, select:disabled, button:disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+:where(input::placeholder, textarea::placeholder) {
+    opacity: 0.6;
+    color: inherit;
+}
+
+/* P6 Number-tabular — 数据列、价格、计时器自动等宽数字（无布局抖动） */
+:where(td, th[scope="col"][data-numeric], .num, .number, time, .stat-num, output) {
+    font-variant-numeric: tabular-nums;
+}
+
+/* P4 Style — 一致的代码块外观跨 51 工具 */
+:where(code, pre, kbd, samp) {
+    font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, Consolas, monospace);
+    font-size: 0.92em;
+}
+:where(:not(pre) > code) {
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.08); /* fallback for browsers without color-mix */
+    background: color-mix(in srgb, var(--ink, #000) 8%, transparent);
+}
+:where(kbd) {
+    padding: 0.1em 0.45em;
+    border-radius: 4px;
+    border: 1px solid var(--line, rgba(0,0,0,.15));
+    background: var(--bg, #fff);
+    box-shadow: 0 1px 0 var(--line, rgba(0,0,0,.15));
+    font-size: 0.85em;
+}
+
+/* P7 Animation — 通用 micro-interactions（按按钮/卡片要按需 opt-in，已有动画工具不受影响） */
+@media (prefers-reduced-motion: no-preference) {
+    :where(button, [role="button"], a.btn) {
+        transition: transform 0.12s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+    }
+    :where(button:active:not(:disabled), [role="button"]:active, a.btn:active) {
+        transform: scale(0.97);
+    }
+}
+
+/* P6 Selection — 统一文本选中色（很多工具默认浏览器蓝，与品牌色冲突） */
+:where(::selection) {
+    background: rgba(37, 99, 235, 0.28); /* fallback for browsers without color-mix */
+    background: color-mix(in srgb, var(--accent, #2563eb) 28%, transparent);
+    color: inherit;
+}
+
+/* P4 滚动条 — Firefox 细滚动条 + WebKit 一致样式。
+   注意：::-webkit-scrollbar* 是伪元素，特异性为 0,0,1 不能被 :where() 归零。
+   工具如已自定义滚动条会按级联规则正确覆盖（同特异性下后者胜，
+   工具 CSS 在 design-tokens.css 之后加载所以工具样式优先）。 */
+:where(html) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line, rgba(0,0,0,.2)) transparent;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--line, rgba(0,0,0,.2));
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-secondary, rgba(0,0,0,.4));
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+
+/* P6 链接 — 有意义的连续文字下划线（不影响 .btn 类） */
+:where(a:not(.btn):not(.skip-link):not([class*="tag"]):not([class*="pill"])) {
+    text-decoration-skip-ink: auto;
+}
+
+/* P5 媒体 — 防止图片/视频破坏布局 */
+:where(img, svg, video, canvas, picture) {
+    max-width: 100%;
+    height: auto;
+}
+:where(img) {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* iOS — 防止表单输入触发自动缩放（输入字号必须 ≥ 16px） */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 600px) {
+        :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select) {
+            font-size: max(16px, var(--text-base, 1rem));
+        }
+    }
+}
