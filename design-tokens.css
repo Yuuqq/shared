@@ -609,3 +609,154 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
 :where(:lang(zh)) :where(h1, h2, h3, h4, h5, h6) {
     letter-spacing: 0;
 }
+
+/* =====================================================================
+ * v2.3 全局 UI 体验层（2026-05）— 应用 ui-ux-pro-max + frontend-design 优先级
+ * 全部用 :where() 零特异性，工具的自定义样式永远优先。
+ * 一次推送 Yuuqq/shared 即同时惠及 51 个工具。
+ * ===================================================================== */
+
+/* P1 Accessibility — 强化全局焦点环（替代浏览器虚线默认） */
+:where(:focus-visible) {
+    outline: 2px solid var(--accent, #2563eb);
+    outline-offset: 2px;
+    border-radius: 4px;
+    transition: outline-offset 0.12s ease;
+}
+:where(button:focus-visible, [role="button"]:focus-visible) {
+    outline-offset: 3px;
+}
+
+/* P6 Typography — 标题不再产生孤行；正文段落更易扫读 */
+:where(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+}
+:where(p, li, dd, blockquote) {
+    text-wrap: pretty;
+}
+
+/* P5 Layout — 锚点滚动到位时不被固定头遮挡 */
+:where(html) {
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+}
+@media (prefers-reduced-motion: reduce) {
+    :where(html) { scroll-behavior: auto; }
+}
+:where(:target, [id]:focus-visible) {
+    scroll-margin-top: 2rem;
+}
+
+/* P2 Touch & Interaction — 粗指针设备最小触摸目标 44px */
+@media (pointer: coarse) {
+    :where(button, [role="button"], a.btn, input[type="button"], input[type="submit"], input[type="reset"]) {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    :where(input[type="checkbox"], input[type="radio"]) {
+        min-width: 20px;
+        min-height: 20px;
+    }
+}
+
+/* P8 Forms & Feedback — 统一表单基线，独立工具仍可覆写 */
+:where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select) {
+    font-family: inherit;
+    font-size: var(--text-base, 1rem);
+    line-height: var(--leading-snug, 1.4);
+}
+:where(input:focus-visible, textarea:focus-visible, select:focus-visible) {
+    outline: 2px solid var(--accent, #2563eb);
+    outline-offset: 1px;
+}
+:where(input:disabled, textarea:disabled, select:disabled, button:disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+:where(input::placeholder, textarea::placeholder) {
+    opacity: 0.6;
+    color: inherit;
+}
+
+/* P6 Number-tabular — 数据列、价格、计时器自动等宽数字（无布局抖动） */
+:where(td, th[scope="col"][data-numeric], .num, .number, time, .stat-num, output) {
+    font-variant-numeric: tabular-nums;
+}
+
+/* P4 Style — 一致的代码块外观跨 51 工具 */
+:where(code, pre, kbd, samp) {
+    font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, Consolas, monospace);
+    font-size: 0.92em;
+}
+:where(:not(pre) > code) {
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--ink, #000) 8%, transparent);
+}
+:where(kbd) {
+    padding: 0.1em 0.45em;
+    border-radius: 4px;
+    border: 1px solid var(--line, rgba(0,0,0,.15));
+    background: var(--bg, #fff);
+    box-shadow: 0 1px 0 var(--line, rgba(0,0,0,.15));
+    font-size: 0.85em;
+}
+
+/* P7 Animation — 通用 micro-interactions（按按钮/卡片要按需 opt-in，已有动画工具不受影响） */
+@media (prefers-reduced-motion: no-preference) {
+    :where(button, [role="button"], a.btn) {
+        transition: transform 0.12s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+    }
+    :where(button:active:not(:disabled), [role="button"]:active, a.btn:active) {
+        transform: scale(0.97);
+    }
+}
+
+/* P6 Selection — 统一文本选中色（很多工具默认浏览器蓝，与品牌色冲突） */
+:where(::selection) {
+    background: color-mix(in srgb, var(--accent, #2563eb) 28%, transparent);
+    color: inherit;
+}
+
+/* P4 滚动条 — Firefox 细滚动条 + WebKit 一致样式 */
+:where(html) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line, rgba(0,0,0,.2)) transparent;
+}
+:where(*)::-webkit-scrollbar { width: 10px; height: 10px; }
+:where(*)::-webkit-scrollbar-track { background: transparent; }
+:where(*)::-webkit-scrollbar-thumb {
+    background: var(--line, rgba(0,0,0,.2));
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+:where(*)::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-secondary, rgba(0,0,0,.4));
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+
+/* P6 链接 — 有意义的连续文字下划线（不影响 .btn 类） */
+:where(a:not(.btn):not(.skip-link):not([class*="tag"]):not([class*="pill"])) {
+    text-decoration-skip-ink: auto;
+}
+
+/* P5 媒体 — 防止图片/视频破坏布局 */
+:where(img, svg, video, canvas, picture) {
+    max-width: 100%;
+    height: auto;
+}
+:where(img) {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* iOS — 防止表单输入触发自动缩放（输入字号必须 ≥ 16px） */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 600px) {
+        :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select) {
+            font-size: max(16px, var(--text-base, 1rem));
+        }
+    }
+}
