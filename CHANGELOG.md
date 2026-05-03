@@ -13,6 +13,40 @@ Versioning follows [SemVer](https://semver.org/).
 
 ---
 
+## [v2.6.2] – 2026-05-03 — *Q1-B 51-tool migration complete*
+
+This entry records the **downstream completion** of Q1-B. No code change
+to shared/ itself — only documentation. The actual migration commits
+live in the 51 `Yuuqq/P##` repositories.
+
+### Migrated
+- **51/51 tools** successfully migrated to the loader pattern.
+- **414 individual <script> tags removed** across the suite,
+  replaced with **51 single-line loader declarations**.
+- **Net reduction**: ~363 script-tag lines across the codebase.
+- **Pin path**: `releases/v2.6/loader.js` (receives PATCH updates only).
+
+### Migration safety guarantees preserved per tool
+- design-tokens.css `<link>` left in place to keep original CSS load
+  order (avoids cascade regressions).
+- vendor/ scripts (echarts, papaparse, etc.) untouched — they are not
+  shared modules.
+- Same modules, same declaration order, same async semantics.
+- New runtime API now uniformly available:
+  `window.Shared.loader.{ ready, status, errors }`.
+
+### Q1-B closeout
+- ✅ loader infrastructure: shipped v2.6.0 (commit dca0555)
+- ✅ pedagogy module map: shipped v2.6.1 (commit 754678a)
+- ✅ 51-tool migration: complete (this entry)
+- 📊 Load patterns: **16 → 1** (per ROADMAP KPI)
+- 📊 Cross-repo bug-class eliminated: per-tool drift in include order
+
+### Changed
+- *(no breaking changes — fully backwards compatible)*
+
+---
+
 ## [v2.6.1] – 2026-05-03 — *expand module map for 51-tool migration*
 
 ### Added

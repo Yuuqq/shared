@@ -5,7 +5,7 @@
 > **当前基线**：v2.5（4 层 polish 全量交付）
 > **作者**：项目维护者
 > **文档性质**：living document — 每季度末复盘并更新下季度细节
-> **最近更新**：2026-05-03（v1.3 — Q1-B loader 基础设施已发版）
+> **最近更新**：2026-05-03（v1.4 — Q1-B 全量收官，51 工具迁移完成）
 
 ---
 
@@ -14,8 +14,9 @@
 > `releases/v2.5/` 已建立，[CHANGELOG.md](./CHANGELOG.md) 记录全部 15 次提交，
 > [README.md](./README.md) 提供入口文档，[MIGRATION.md](./MIGRATION.md)
 > 为 v3.0.0 留好模板。commit `4cd50a6`。
-> - Q1-B 加载脚本归一化 🟢 **基础设施完成** — `loader.js` + `loader.mjs`
->   发版 v2.6.0，13 项断言全过；51 工具批量迁移留待单独 sprint。
+> - Q1-B 加载脚本归一化 ✅ **完整完成** — `loader.js` v2.6.x 发版，
+>   13 项断言全过；**51/51 工具批量迁移完成**，共移除 414
+>   行 `<script>` 标签换成 51 行 loader 声明；加载模式 16 → 1（KPI 达成）。
 
 > **相关文档**：[README.md](./README.md) · [CHANGELOG.md](./CHANGELOG.md) · [MIGRATION.md](./MIGRATION.md)
 
@@ -181,7 +182,7 @@ L4  工具特有强化                    ✅ 51/51
   | 51 工具 sed 替换误伤 | 中 | 先用 dry-run 出 diff，人工抽查 5 个 |
   | GitHub Pages 缓存导致旧版本仍生效 | 中 | 在新 release HTML 里加 `<meta http-equiv="cache-control" content="max-age=300">` |
 
-### Q1-B · 加载脚本归一化 🟡 P1 · 🟢 进行中（loader 基础设施已发版 v2.6.0，2026-05-03）
+### Q1-B · 加载脚本归一化 🟡 P1 · ✅ **已完成（2026-05-03）**
 - **工时**：1 周（5 工作日）
 - **背景**：审计发现 51 工具有 16 种不同的 shared 加载顺序。新增一个 shared 模块需要改 51 个 index.html。
 - **具体步骤**
@@ -705,6 +706,7 @@ scope 例：`(p01)` `(shared)` `(dark-toggle)` `(loader)`
 | 1.1 | 2026-05-03 | 打磨：加目录、依赖图、KPI 总表、立即执行清单、规范附录 |
 | 1.2 | 2026-05-03 | 加 Q1-A 进度横幅；交叉引用 README / CHANGELOG / MIGRATION |
 | 1.3 | 2026-05-03 | Q1-B loader 基础设施完成；标记 Q1-B 进行中 |
+| 1.4 | 2026-05-03 | Q1-B 51 工具批量迁移完成；标记 Q1-B 已完成 |
 
 ---
 
