@@ -541,7 +541,7 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
     /* Type scale (1.125 minor third)，rem 基于 16px */
     --text-xs:   0.75rem;    /* 12px — 元信息、徽章 */
     --text-sm:   0.85rem;    /* 13.6px — 副标签、表格 */
-    --text-base: 0.95rem;    /* 15.2px — 正文 */
+    --text-base: 1rem;       /* 16px — 正文（CJK 友好） */
     --text-md:   1rem;       /* 16px — 强调正文 */
     --text-lg:   1.125rem;   /* 18px — 小标题 */
     --text-xl:   1.4rem;     /* 22.4px — h2 */
@@ -560,34 +560,12 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
     --tracking-wide:   0.04em;  /* 全大写小标签 */
 }
 
-/* 默认排版基线（零特异性，工具自定义会自动胜出） */
+/* 默认排版基线 — 仅 body/label/small（这些值原本就高度趋同，不破坏 hierarchy） */
+/* 标题尺寸不强制：浏览器 UA 默认 (h2:1.5em / h3:1.17em) 与 :where(h2:1.4rem) 会冲突，
+   会让"未自定义标题"的工具悄悄变小，破坏视觉层级。改为 opt-in：
+   想统一标题节奏的工具在 <html> 上加 class="type-scale-v22"。 */
 :where(body) {
-    font-size: var(--text-base);
     line-height: var(--leading-normal);
-}
-:where(h1) {
-    font-size: var(--text-2xl);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
-    margin-block: 0 var(--space-sm, 8px);
-}
-:where(.hero h1, h1.hero, h1.gradient) {
-    font-size: var(--text-hero);
-}
-:where(h2) {
-    font-size: var(--text-xl);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    margin-block: var(--space-md, 16px) var(--space-sm, 8px);
-}
-:where(h3) {
-    font-size: var(--text-lg);
-    line-height: var(--leading-snug);
-    margin-block: var(--space-md, 16px) var(--space-xs, 4px);
-}
-:where(h4, h5, h6) {
-    font-size: var(--text-md);
-    line-height: var(--leading-snug);
 }
 :where(small, .small, .caption) {
     font-size: var(--text-xs);
@@ -596,4 +574,38 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
 :where(label) {
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
+}
+
+/* Opt-in: <html class="type-scale-v22"> */
+:where(.type-scale-v22 body) {
+    font-size: var(--text-base);
+}
+:where(.type-scale-v22 h1) {
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-block: 0 var(--space-sm, 8px);
+}
+:where(.type-scale-v22 .hero h1, .type-scale-v22 h1.hero, .type-scale-v22 h1.gradient) {
+    font-size: var(--text-hero);
+}
+:where(.type-scale-v22 h2) {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    margin-block: var(--space-md, 16px) var(--space-sm, 8px);
+}
+:where(.type-scale-v22 h3) {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    margin-block: var(--space-md, 16px) var(--space-xs, 4px);
+}
+:where(.type-scale-v22 h4, .type-scale-v22 h5, .type-scale-v22 h6) {
+    font-size: var(--text-md);
+    line-height: var(--leading-snug);
+}
+
+/* CJK 友好：负字距对中文不利，强制中文区域 letter-spacing:0 */
+:where(:lang(zh)) :where(h1, h2, h3, h4, h5, h6) {
+    letter-spacing: 0;
 }
