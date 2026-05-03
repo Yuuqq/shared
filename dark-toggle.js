@@ -62,17 +62,46 @@
   function syncThemeColor(theme) {
     const computedBg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
     const content = computedBg || (theme === "dark" ? "#1a1a2e" : "#f4f0e8");
-    let metas = Array.from(document.querySelectorAll('meta[name="theme-color"]'));
-    if (!metas.length) {
-      const meta = document.createElement("meta");
-      meta.name = "theme-color";
-      document.head.appendChild(meta);
-      metas = [meta];
+    const allMetas = Array.from(document.querySelectorAll('meta[name="theme-color"]'));
+
+    // Preserve a properly authored media-qualified pair, e.g.
+    //   <meta name="theme-color" media="(prefers-color-scheme: light)" ...>
+    //   <meta name="theme-color" media="(prefers-color-scheme: dark)"  ...>
+    // so the browser still respects them when the user has *not* set an
+    // explicit toggle preference (auto follows OS). We only manage the
+    // unqualified meta as our "current toggled theme" indicator.
+    const stored = (function () {
+      try { return localStorage.getItem(STORAGE_KEY); } catch (_e) { return null; }
+    })();
+
+    const mediaMetas = allMetas.filter(m => m.getAttribute("media"));
+    const plainMetas = allMetas.filter(m => !m.getAttribute("media"));
+
+    if (!stored && mediaMetas.length >= 2) {
+      // User has no explicit preference — let the media-qualified pair drive
+      // the OS-following theme-color. Just clean up stray duplicates without
+      // a media attr to avoid contradictory hints.
+      plainMetas.slice(1).forEach(meta => meta.remove());
+      // If a plain meta exists alongside the pair, leave the first one in
+      // place but blank its content so the pair wins.
+      if (plainMetas[0]) plainMetas[0].setAttribute("content", content);
+      return;
     }
-    const primary = metas[0];
+
+    // User has explicitly picked a theme via the toggle — write a single
+    // unqualified meta so the browser uses it regardless of OS preference.
+    let primary = plainMetas[0];
+    if (!primary) {
+      primary = document.createElement("meta");
+      primary.name = "theme-color";
+      document.head.appendChild(primary);
+    }
     primary.setAttribute("content", content);
     primary.removeAttribute("media");
-    metas.slice(1).forEach(meta => meta.remove());
+    plainMetas.slice(1).forEach(meta => meta.remove());
+    // Remove media-qualified metas only when an explicit toggle is in
+    // effect, otherwise the OS-following pair would override our choice.
+    mediaMetas.forEach(meta => meta.remove());
   }
 
   function syncToggleButton(btn, theme) {
