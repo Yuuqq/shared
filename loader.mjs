@@ -17,10 +17,12 @@ const MODULE_MAP = {
   "url-state":  "url-state.js",
   "export-png": "export-png.js",
   "cmd":        "cmd-palette.js",
-  "kbd":        "kbd-hints.js",
+  "kbd":         "kbd-hints.js",
+  "pedagogy-p1": "pedagogy-data-p1.js",
+  "pedagogy-p2": "pedagogy-data-p2.js",
 };
 
-export const VERSION = "v2.6.0";
+export const VERSION = "v2.6.1";
 export const map = MODULE_MAP;
 
 function injectTokensIfNeeded(base, mode) {

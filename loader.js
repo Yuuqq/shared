@@ -37,10 +37,12 @@
     "url-state":  "url-state.js",
     "export-png": "export-png.js",
     "cmd":        "cmd-palette.js",
-    "kbd":        "kbd-hints.js"
+    "kbd":         "kbd-hints.js",
+    "pedagogy-p1": "pedagogy-data-p1.js",
+    "pedagogy-p2": "pedagogy-data-p2.js"
   };
 
-  var VERSION = "v2.6.0";
+  var VERSION = "v2.6.1";
 
   // --- Locate own script + base path ------------------------------------
   function findSelf() {

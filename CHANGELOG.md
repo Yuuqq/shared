@@ -13,6 +13,27 @@ Versioning follows [SemVer](https://semver.org/).
 
 ---
 
+## [v2.6.1] – 2026-05-03 — *expand module map for 51-tool migration*
+
+### Added
+- Two new short-name entries to the loader module registry to cover
+  pedagogy data files included by 49/51 P-series tools:
+  - `pedagogy-p1` → `pedagogy-data-p1.js`
+  - `pedagogy-p2` → `pedagogy-data-p2.js`
+- Enables the imminent 51-tool batch migration: every shared script
+  currently included by any P-series tool now has a short-name in the
+  loader.
+
+### Changed
+- *(no breaking changes — additive registry extension)*
+
+### Note
+- `releases/v2.6/loader.js` is updated in place per SemVer convention
+  (PATCH releases land on the MAJOR.MINOR pin path). Tools that pin to
+  `releases/v2.6/loader.js` automatically receive this patch.
+
+---
+
 ## [v2.6.0] – 2026-05-03 — *Q1-B loader infrastructure*
 
 This release introduces the **single-entry-point loader** that consolidates
