@@ -288,11 +288,27 @@
     let step = 0;
     let keyHandler = null;
 
+    let scrollHandler = null;
+    let resizeHandler = null;
+    let rafId = 0;
+
     function clearTour() {
       document.querySelectorAll(".onboarding-ring,.onboarding-tip").forEach((el) => el.remove());
       if (keyHandler) {
         document.removeEventListener("keydown", keyHandler);
         keyHandler = null;
+      }
+      if (scrollHandler) {
+        window.removeEventListener("scroll", scrollHandler, true);
+        scrollHandler = null;
+      }
+      if (resizeHandler) {
+        window.removeEventListener("resize", resizeHandler);
+        resizeHandler = null;
+      }
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
       }
     }
 
@@ -319,8 +335,8 @@
       target.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
 
       setTimeout(() => {
-        const rect = target.getBoundingClientRect();
-        if (rect.width <= 0 || rect.height <= 0) {
+        const initialRect = target.getBoundingClientRect();
+        if (initialRect.width <= 0 || initialRect.height <= 0) {
           step += 1;
           renderCurrent();
           return;
@@ -328,10 +344,6 @@
 
         const ring = document.createElement("div");
         ring.className = "onboarding-ring";
-        ring.style.top = `${Math.max(8, rect.top - 6)}px`;
-        ring.style.left = `${Math.max(8, rect.left - 6)}px`;
-        ring.style.width = `${Math.min(window.innerWidth - 16, rect.width + 12)}px`;
-        ring.style.height = `${Math.min(window.innerHeight - 16, rect.height + 12)}px`;
 
         const tooltip = document.createElement("div");
         tooltip.className = "onboarding-tip";
@@ -347,17 +359,53 @@
         document.body.appendChild(ring);
         document.body.appendChild(tooltip);
 
-        const width = tooltip.offsetWidth;
-        const height = tooltip.offsetHeight;
-        const topCandidate = rect.bottom + 12;
-        const top =
-          topCandidate + height <= window.innerHeight - 12
-            ? topCandidate
-            : Math.max(12, rect.top - height - 12);
-        const left = clamp(rect.left, 12, window.innerWidth - width - 12);
+        function reposition() {
+          // Re-measure on every reposition so ring + tip follow the target
+          // when the user scrolls or resizes mid-tour. Without this the
+          // position:fixed ring stays at its initial viewport coords and
+          // can end up overlapping unrelated sections.
+          if (!target.isConnected) {
+            finish(true);
+            return;
+          }
+          const rect = target.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0) return;
 
-        tooltip.style.top = `${top}px`;
-        tooltip.style.left = `${left}px`;
+          ring.style.top = `${Math.max(8, rect.top - 6)}px`;
+          ring.style.left = `${Math.max(8, rect.left - 6)}px`;
+          ring.style.width = `${Math.min(window.innerWidth - 16, rect.width + 12)}px`;
+          ring.style.height = `${Math.min(window.innerHeight - 16, rect.height + 12)}px`;
+
+          const width = tooltip.offsetWidth;
+          const height = tooltip.offsetHeight;
+          const topCandidate = rect.bottom + 12;
+          const top =
+            topCandidate + height <= window.innerHeight - 12
+              ? topCandidate
+              : Math.max(12, rect.top - height - 12);
+          const left = clamp(rect.left, 12, window.innerWidth - width - 12);
+
+          tooltip.style.top = `${top}px`;
+          tooltip.style.left = `${left}px`;
+        }
+
+        function scheduleReposition() {
+          if (rafId) return;
+          rafId = requestAnimationFrame(() => {
+            rafId = 0;
+            reposition();
+          });
+        }
+
+        reposition();
+
+        // Capture-phase scroll listener catches scrolls on any ancestor
+        // (some tools use overflow:scroll inner panels), and resize covers
+        // viewport changes / orientation flips.
+        scrollHandler = scheduleReposition;
+        resizeHandler = scheduleReposition;
+        window.addEventListener("scroll", scrollHandler, true);
+        window.addEventListener("resize", resizeHandler);
 
         tooltip.querySelector("[data-action='skip']").addEventListener("click", () => finish(true));
         tooltip.querySelector("[data-action='next']").addEventListener("click", () => {
