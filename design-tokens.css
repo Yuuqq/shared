@@ -655,7 +655,9 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
     :where(button, [role="button"], a.btn, input[type="button"], input[type="submit"], input[type="reset"]) {
         min-height: 44px;
     }
-    :where(.square-target) {
+    :where(.touch-square, .square-target) {
+        /* .touch-square (v2.1) + .square-target (v2.3) — 同义别名，
+           v2.3 文档即承认两者一致；任一类名生效都强制 44px 方形热区。 */
         min-width: 44px;
     }
     :where(input[type="checkbox"], input[type="radio"]) {
