@@ -616,11 +616,11 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
  * 一次推送 Yuuqq/shared 即同时惠及 51 个工具。
  * ===================================================================== */
 
-/* P1 Accessibility — 强化全局焦点环（替代浏览器虚线默认） */
+/* P1 Accessibility — 焦点环属性（被前面的非:where焦点规则正确覆盖；
+   保留作为没有自定义焦点样式的工具的兜底）。 */
 :where(:focus-visible) {
-    outline: 2px solid var(--accent, #2563eb);
+    outline: 3px solid var(--accent, #2563eb);
     outline-offset: 2px;
-    border-radius: 4px;
     transition: outline-offset 0.12s ease;
 }
 :where(button:focus-visible, [role="button"]:focus-visible) {
@@ -647,10 +647,15 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
     scroll-margin-top: 2rem;
 }
 
-/* P2 Touch & Interaction — 粗指针设备最小触摸目标 44px */
-@media (pointer: coarse) {
+/* P2 Touch & Interaction — 触摸/混合设备最小触摸高度 44px。
+   注意：仅设 min-height 不设 min-width — min-width:44px 会破坏紧凑工具栏
+   （ui-ux-pro-max P2 touch-spacing 8px 间距 vs touch-target-size 是互补关系，
+   不必在每个按钮上强制方形）。如需方形目标，在按钮上加 .square-target 类。 */
+@media (any-pointer: coarse) {
     :where(button, [role="button"], a.btn, input[type="button"], input[type="submit"], input[type="reset"]) {
         min-height: 44px;
+    }
+    :where(.square-target) {
         min-width: 44px;
     }
     :where(input[type="checkbox"], input[type="radio"]) {
@@ -691,6 +696,7 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
 :where(:not(pre) > code) {
     padding: 0.1em 0.35em;
     border-radius: 4px;
+    background: rgba(0, 0, 0, 0.08); /* fallback for browsers without color-mix */
     background: color-mix(in srgb, var(--ink, #000) 8%, transparent);
 }
 :where(kbd) {
@@ -714,24 +720,28 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
 
 /* P6 Selection — 统一文本选中色（很多工具默认浏览器蓝，与品牌色冲突） */
 :where(::selection) {
+    background: rgba(37, 99, 235, 0.28); /* fallback for browsers without color-mix */
     background: color-mix(in srgb, var(--accent, #2563eb) 28%, transparent);
     color: inherit;
 }
 
-/* P4 滚动条 — Firefox 细滚动条 + WebKit 一致样式 */
+/* P4 滚动条 — Firefox 细滚动条 + WebKit 一致样式。
+   注意：::-webkit-scrollbar* 是伪元素，特异性为 0,0,1 不能被 :where() 归零。
+   工具如已自定义滚动条会按级联规则正确覆盖（同特异性下后者胜，
+   工具 CSS 在 design-tokens.css 之后加载所以工具样式优先）。 */
 :where(html) {
     scrollbar-width: thin;
     scrollbar-color: var(--line, rgba(0,0,0,.2)) transparent;
 }
-:where(*)::-webkit-scrollbar { width: 10px; height: 10px; }
-:where(*)::-webkit-scrollbar-track { background: transparent; }
-:where(*)::-webkit-scrollbar-thumb {
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
     background: var(--line, rgba(0,0,0,.2));
     border-radius: 8px;
     border: 2px solid transparent;
     background-clip: padding-box;
 }
-:where(*)::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background: var(--ink-secondary, rgba(0,0,0,.4));
     background-clip: padding-box;
     border: 2px solid transparent;
