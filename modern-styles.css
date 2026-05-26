@@ -1,0 +1,472 @@
+/**
+ * 现代化增强样式 - 50个新闻工具统一视觉升级
+ * 在 design-tokens.css 基础上添加现代化效果
+ * 引入方式：<link rel="stylesheet" href="../shared/modern-styles.css" />
+ */
+
+/* ===== 现代化色彩系统 ===== */
+:root {
+    /* 更现代的背景色 */
+    --bg-modern: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    --bg-gradient: radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 80%, rgba(96, 165, 250, 0.03) 0%, transparent 50%);
+    
+    /* 现代化强调色 */
+    --accent-modern: #2563eb;
+    --accent-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    --accent-glow: 0 0 20px rgba(37, 99, 235, 0.3);
+    
+    /* 现代化阴影 */
+    --shadow-modern: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                     0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                      0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --shadow-floating: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                       0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== 现代化背景 ===== */
+body {
+    background: var(--bg-gradient), var(--bg) !important;
+    background-attachment: fixed !important;
+}
+
+/* ===== gnav spacer + safe padding ===== */
+main, .app {
+    padding-top: 48px !important;
+    padding-left: max(16px, var(--page-pad, 16px)) !important;
+    padding-right: max(16px, var(--page-pad, 16px)) !important;
+}
+
+.card, .panel, .hero, header, section, article {
+    padding-left: max(14px, var(--card-pad, 14px)) !important;
+    padding-right: max(14px, var(--card-pad, 14px)) !important;
+}
+
+/* ===== 现代化卡片设计 ===== */
+.card, .panel, .container > div, section {
+    background: var(--card) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--shadow-modern) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover, .panel:hover, section:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elevated) !important;
+    border-color: var(--accent-modern) !important;
+}
+
+/* 卡片顶部渐变边框效果 */
+.card::before, .panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover::before, .panel:hover::before {
+    opacity: 1;
+}
+
+/* ===== 现代化Hero区域 ===== */
+.hero {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 20px !important;
+    padding: 32px !important;
+    margin-bottom: 24px !important;
+    box-shadow: var(--shadow-modern) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero h1 {
+    background: var(--accent-gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    position: relative;
+    z-index: 1;
+}
+
+.hero p {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== 现代化按钮设计 ===== */
+button, .btn, [type="button"], [type="submit"] {
+    background: var(--accent-gradient) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2) !important;
+}
+
+button:hover, .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow) !important;
+}
+
+button:active, .btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* 按钮光波效果 */
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-secondary, button.secondary {
+    background: transparent !important;
+    border: 2px solid var(--line) !important;
+    color: var(--ink) !important;
+    box-shadow: none !important;
+}
+
+.btn-secondary:hover, button.secondary:hover {
+    background: var(--accent-light) !important;
+    border-color: var(--accent-modern) !important;
+    color: var(--accent-modern) !important;
+}
+
+/* ===== 现代化输入框设计 ===== */
+input, textarea, select {
+    border: 2px solid var(--line) !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    transition: all 0.3s ease !important;
+    background: white !important;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--accent-modern) !important;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
+    outline: none !important;
+}
+
+/* ===== 现代化教学卡片 ===== */
+.teach-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.03) 0%, rgba(59, 130, 246, 0.01) 100%) !important;
+    border-left: 4px solid var(--accent-modern) !important;
+    padding-left: 16px !important;
+}
+
+.teach-card summary {
+    font-weight: 600;
+    color: var(--accent-modern);
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+/* ===== 现代化链接设计 ===== */
+a {
+    color: var(--accent-modern) !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+a:hover {
+    color: #1d4ed8 !important;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background: var(--accent-modern);
+    transition: width 0.3s ease;
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+/* ===== 现代化标签和徽章 ===== */
+.badge, .tag {
+    background: var(--accent-light) !important;
+    color: var(--accent-modern) !important;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* ===== 现代化动画效果 ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.app, main, body > .container {
+    animation: fadeInUp 0.5s ease-out;
+    overflow-x: hidden;
+}
+
+/* ===== 现代化响应式设计 ===== */
+@media (max-width: 768px) {
+    .hero {
+        padding: 24px 20px !important;
+        border-radius: 16px !important;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem !important;
+    }
+    
+    .card, .panel, section {
+        border-radius: 12px !important;
+        padding: 20px !important;
+    }
+    
+    button, .btn {
+        width: 100%;
+        padding: 14px 20px !important;
+    }
+    
+    input, textarea, select {
+        font-size: 16px; /* 防止iOS缩放 */
+    }
+}
+
+/* ===== 现代化滚动条 ===== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-modern);
+}
+
+/* ===== 现代化加载状态 ===== */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 16px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--line);
+    border-top-color: var(--accent-modern);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== 现代化工具提示 ===== */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    background: var(--ink);
+    color: var(--bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 100;
+    box-shadow: var(--shadow-modern);
+}
+
+[data-tooltip]:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* ===== 现代化状态指示器 ===== */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.status-dot.success {
+    background: var(--ok);
+    box-shadow: 0 0 8px rgba(11, 122, 59, 0.4);
+}
+
+.status-dot.warning {
+    background: var(--warn);
+    box-shadow: 0 0 8px rgba(184, 110, 0, 0.4);
+}
+
+.status-dot.error {
+    background: var(--bad);
+    box-shadow: 0 0 8px rgba(166, 31, 18, 0.4);
+}
+
+/* ===== 现代化进度条 ===== */
+.progress-bar {
+    height: 8px;
+    background: var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* ===== 现代化分隔线 ===== */
+hr {
+    border: none;
+    height: 1px;
+    background: var(--line);
+    margin: 24px 0;
+}
+
+/* ===== 现代化代码块 ===== */
+pre, code {
+    background: var(--bg-modern) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 8px !important;
+    font-family: var(--font-mono) !important;
+}
+
+code {
+    padding: 2px 6px !important;
+    font-size: 0.9em;
+}
+
+pre {
+    padding: 16px !important;
+    overflow-x: auto;
+}
+
+/* ===== 现代化表格 ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+th {
+    background: var(--bg-modern);
+    font-weight: 600;
+    color: var(--ink-secondary);
+}
+
+tr:hover {
+    background: var(--accent-light);
+}
+
+/* ===== 现代化图片和媒体 ===== */
+img, video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: var(--shadow-modern);
+}
+
+/* ===== 现代化焦点状态 ===== */
+:focus-visible {
+    outline: 3px solid var(--accent-modern) !important;
+    outline-offset: 2px !important;
+}
+
+/* ===== 现代化打印样式 ===== */
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .card, .panel, .hero {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+    
+    button, .btn {
+        display: none;
+    }
+}

@@ -216,7 +216,8 @@
     const style = document.createElement("style");
     style.id = FLOW_STYLE_ID;
     style.textContent = `
-.flow-guide{margin:16px 0;border:1px solid var(--line,#ddd);border-radius:14px;background:var(--card,#fff);box-shadow:0 6px 18px rgba(0,0,0,.06);overflow:hidden}
+.flow-guide{margin:16px 0;border:1px solid var(--line,#ddd);border-radius:14px;background:var(--card,#fff);box-shadow:0 6px 18px rgba(0,0,0,.06);overflow:hidden;position:relative;z-index:2}
+.flow-guide:not([open]) .flow-guide-body{display:none}
 .flow-guide summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .flow-guide summary::-webkit-details-marker{display:none}
 .flow-guide summary span{color:var(--ink-secondary,#6b7280);font-size:.92rem;font-weight:500}
@@ -250,7 +251,7 @@
 
     const details = document.createElement("details");
     details.className = "flow-guide";
-    details.open = true;
+    details.open = false;
     details.innerHTML = `
       <summary>
         <strong>建议这样使用</strong>
@@ -267,7 +268,10 @@
       </div>
     `.trim();
 
-    details.querySelector("[data-action='tour']").addEventListener("click", () => startTour(true));
+    details.querySelector("[data-action='tour']").addEventListener("click", (e) => {
+      e.stopPropagation();
+      startTour(true);
+    });
     details.querySelector("[data-action='dismiss']").addEventListener("click", () => {
       safeSetItem(storageKey, "1");
     });
@@ -330,8 +334,8 @@
         ring.className = "onboarding-ring";
         ring.style.top = `${Math.max(8, rect.top - 6)}px`;
         ring.style.left = `${Math.max(8, rect.left - 6)}px`;
-        ring.style.width = `${Math.min(window.innerWidth - 16, rect.width + 12)}px`;
-        ring.style.height = `${Math.min(window.innerHeight - 16, rect.height + 12)}px`;
+        ring.style.width = `${Math.min(window.innerWidth - rect.left - 8, rect.width + 12)}px`;
+        ring.style.height = `${Math.min(window.innerHeight - rect.top - 8, rect.height + 12)}px`;
 
         const tooltip = document.createElement("div");
         tooltip.className = "onboarding-tip";
@@ -354,7 +358,8 @@
           topCandidate + height <= window.innerHeight - 12
             ? topCandidate
             : Math.max(12, rect.top - height - 12);
-        const left = clamp(rect.left, 12, window.innerWidth - width - 12);
+        const centerLeft = rect.left + rect.width / 2 - width / 2;
+        const left = clamp(centerLeft, 16, window.innerWidth - width - 16);
 
         tooltip.style.top = `${top}px`;
         tooltip.style.left = `${left}px`;
@@ -395,7 +400,7 @@
     insertFlowGuide(projectId, tips, (force) => tour.start(force), storageKey);
 
     if (!safeGetItem(storageKey)) {
-      setTimeout(() => tour.start(false), 700);
+      // Don't auto-start tour; user can click "高亮引导" to start
     }
   });
 })();

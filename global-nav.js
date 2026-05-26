@@ -12,7 +12,7 @@
   /* ── 样式注入 ── */
   const STYLE = document.createElement("style");
   STYLE.textContent = `
-.gnav{position:sticky;top:0;z-index:900;background:var(--card,#fff);border-bottom:1px solid var(--line,#e0d6cf);padding:6px 16px;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:.97}
+.gnav{position:sticky;top:0;z-index:900;background:var(--card,#fff);border-bottom:1px solid var(--line,#e0d6cf);padding:6px 16px;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:.97;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .gnav-left{display:flex;align-items:center;gap:10px}
 .gnav-home{text-decoration:none;color:var(--accent,#c7491f);font-weight:700;display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;transition:background .15s}
 .gnav-home:hover{background:rgba(199,73,31,.08)}
@@ -97,6 +97,13 @@
     </div>
   `;
   document.body.prepend(nav);
+
+  const main = document.querySelector("main");
+  if (main) {
+    main.style.position = "relative";
+    main.style.zIndex = "1";
+    main.style.paddingTop = "40px";
+  }
 
   /* ── 底部推荐 ── */
   const sameCat = Object.entries(TOOLS)
