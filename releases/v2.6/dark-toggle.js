@@ -181,6 +181,28 @@
     document.body.appendChild(btn);
   }
 
+  function ensureCopyrightFooter() {
+    if (!document.body || document.querySelector("[data-shared-copyright]")) return;
+
+    var style = document.getElementById("sharedCopyrightStyle");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "sharedCopyrightStyle";
+      style.textContent = [
+        ".shared-created-by{margin:20px 0 12px;padding:0 16px;text-align:center;font-size:12px;line-height:1.5;color:var(--ink-secondary,#666);opacity:.88}",
+        ".shared-created-by a{color:inherit;text-decoration:none}",
+        "@media print{.shared-created-by{margin-top:12px;color:#666}}"
+      ].join("");
+      document.head.appendChild(style);
+    }
+
+    var footer = document.createElement("div");
+    footer.className = "shared-created-by";
+    footer.setAttribute("data-shared-copyright", "true");
+    footer.textContent = "Created by qcma & CSS Lab";
+    document.body.appendChild(footer);
+  }
+
   function handleSystemThemeChange() {
     if (!getStoredTheme()) applyTheme(getSystemTheme());
   }
@@ -201,9 +223,13 @@
   // Init
   applyTheme(getPreferred());
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", createToggle);
+    document.addEventListener("DOMContentLoaded", function () {
+      createToggle();
+      ensureCopyrightFooter();
+    });
   } else {
     createToggle();
+    ensureCopyrightFooter();
   }
 })();
 
