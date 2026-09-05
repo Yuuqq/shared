@@ -1,7 +1,5 @@
 /**
  * 🌗 全局暗色模式切换器 (Dark Mode Toggle)
- * 本文件为 P00-dashboard 的本地副本，用于保持仓库自包含。
- * 若上游 shared 版本更新，需要按需同步这里的实现。
  * 引入方式: <script src="./shared/dark-toggle.js" defer></script>
  *
  * 功能：

@@ -1,5 +1,5 @@
 /*!
- * Yuuqq/shared loader.mjs — v2.6.0 (ESM variant)
+ * Yuuqq/shared loader.mjs — v2.6.1 (ESM variant)
  *
  * Programmatic API for module-aware tools that prefer ES modules over
  * the script-tag loader. Same module registry as loader.js.

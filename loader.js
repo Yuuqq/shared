@@ -1,5 +1,5 @@
 /*!
- * Yuuqq/shared loader.js — v2.6.0
+ * Yuuqq/shared loader.js — v2.6.1
  * Single entry point for shared UX modules across the P-series tool suite.
  *
  * Usage (HTML):

@@ -177,7 +177,8 @@ input, textarea, select {
     border-radius: 12px !important;
     padding: 12px 16px !important;
     transition: all 0.3s ease !important;
-    background: white !important;
+    background: var(--card) !important;
+    color: var(--ink) !important;
 }
 
 input:focus, textarea:focus, select:focus {

@@ -8,15 +8,12 @@
  * 3. 网络优先 (Network-First) 获取 API 请求
  * 4. 离线回退页面
  */
-const CACHE_NAME = "journalism-tool-v1";
+const CACHE_NAME = "journalism-tool-shared-v2";
+// 共享仓库自身的页面仅 latest/index.html（内联样式的重定向页），
+// 模板角色保持不变：各工具项目复制本文件后按需扩充此清单。
 const CORE_ASSETS = [
   "./",
-  "./index.html",
-  "./styles.css",
-  "./app.js",
-  "./pm-metrics.js",
-  "../shared/design-tokens.css",
-  "../shared/dark-toggle.js"
+  "./latest/index.html"
 ];
 
 // Install: Pre-cache core assets
@@ -65,6 +62,7 @@ self.addEventListener("fetch", (event) => {
           }
           return response;
         }).catch(() => {});
+        event.waitUntil(fetchPromise);
         return cached;
       }
       return fetch(event.request).then((response) => {

@@ -11,6 +11,10 @@
  * 4. ESC 关闭
  */
 (function () {
+  // 互斥守卫：global-nav.js 已初始化时（其 IIFE 顶部同步设置 window.__globalNavInited），
+  // 不再注入第二个 Ctrl+K 面板；单独引入本文件的项目不受影响。
+  if (window.__globalNavInited) return;
+
   const RECENT_STORAGE_KEY = "journalism_toolbox_recent_tools";
   const isLocalPreview = /^(localhost|127\.0\.0\.1)$/i.test(location.hostname);
   const toolBase = isLocalPreview ? `${location.origin}/projects` : "https://yuuqq.github.io";
@@ -280,7 +284,7 @@
     overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
 
     document.addEventListener("keydown", (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         overlay.style.display === "none" ? open() : close();
       }

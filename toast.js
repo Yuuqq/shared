@@ -28,6 +28,11 @@
   }
 
   const ICONS = { success: "✅", info: "ℹ️", warn: "⚠️", error: "❌" };
+
+  function escapeHtml(str) {
+    return String(str ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
   const COLORS = {
     success: { bg: "var(--ok-light,#e8f5ee)", border: "var(--ok,#0b7a3b)" },
     info: { bg: "var(--accent-light,rgba(199,73,31,0.08))", border: "var(--accent,#c7491f)" },
@@ -57,7 +62,7 @@
       "font-family:var(--font-sans,system-ui)"
     ].join(";");
 
-    toast.innerHTML = `<span aria-hidden="true">${ICONS[type] || ""}</span><span style="flex:1">${message}</span><span aria-hidden="true" style="opacity:0.4;font-size:11px">✕</span>`;
+    toast.innerHTML = `<span aria-hidden="true">${ICONS[type] || ""}</span><span style="flex:1">${escapeHtml(message)}</span><span aria-hidden="true" style="opacity:0.4;font-size:11px">✕</span>`;
     toast.addEventListener("click", () => removeToast(toast));
 
     container.appendChild(toast);

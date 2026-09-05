@@ -23,10 +23,10 @@ the [`Yuuqq/P00`–`Yuuqq/P50`](https://github.com/Yuuqq) series.
 |---|---|---|
 | `dark-toggle.js` | Floating dark/light toggle (bottom-right), system theme follow, cross-tab sync, theme-color meta sync | auto on script include |
 | `global-nav.js` | ⌘K command palette + bottom-right gnav-fab; cross-tool jump | auto on script include |
-| `onboarding.js` | High-light ring + step tooltips that follow scroll/resize | `window.startOnboarding(steps)` |
+| `onboarding.js` | High-light ring + step tooltips that follow scroll/resize | auto on script include (auto-starts per-project tips on DOMContentLoaded; no global function exported) |
 | `autosave.js` | Form state → `localStorage` per tool | auto on `<form data-autosave>` |
 | `url-state.js` | Input state ↔ URL hash sync | auto on `<input data-url-state>` |
-| `toast.js` | Top-center transient messages | `toast(msg, opts)` |
+| `toast.js` | Top-center transient messages | `window.showToast(message, type, duration)` — type: `"success"|"info"|"warn"|"error"` |
 
 ### Utility layer
 
@@ -60,8 +60,8 @@ The `../shared/` relative path resolves to
 ### Pinned to a specific version (recommended for new tools)
 
 ```html
-<link rel="stylesheet" href="../shared/releases/v2.5/design-tokens.css">
-<script defer src="../shared/releases/v2.5/dark-toggle.js"></script>
+<link rel="stylesheet" href="../shared/releases/v2.6/design-tokens.css">
+<script defer src="../shared/releases/v2.6/dark-toggle.js"></script>
 ```
 
 This insulates your tool from future shared/ changes. Bump the path
