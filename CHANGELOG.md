@@ -13,7 +13,17 @@ Versioning follows [SemVer](https://semver.org/).
 
 ---
 
+## [v2.6.3] – 2026-09-07 — *Classroom first screen*
+
+### Fixed
+- **Pedagogy panel no longer hijacks the first screen.** `pedagogy-data-p2.js` now appends the teaching panel at the **end** of `.app` / `main`, still collapsed. Students see the actual tool first; 教材定位 is one scroll away. This was the top complaint in a P04–P50 classroom walkthrough on 13-inch lab machines.
+
+Root copies and `releases/v2.6/` are both updated (PATCH on the pin all 51 tools already use).
+
+---
+
 ## [v2.6.2] – 2026-05-03 — *Q1-B 51-tool migration complete*
+
 
 This entry records the **downstream completion** of Q1-B. No code change
 to shared/ itself — only documentation. The actual migration commits
