@@ -154,6 +154,7 @@
       if (key.startsWith("_")) return;
       const el = document.getElementById(key);
       if (!el) return;
+      if (!shouldShareField(el)) return;
       writeFieldValue(el, value);
       restoredIds.push(key);
       dispatchFieldEvents(el);
@@ -172,17 +173,6 @@
     );
 
     return restoredIds;
-  }
-
-  function autoApplyState(restoredIds) {
-    if (!restoredIds || restoredIds.length === 0) return false;
-    const button = SAFE_AUTO_APPLY_BUTTON_IDS
-      .map((id) => document.getElementById(id))
-      .find((candidate) => candidate && !candidate.disabled);
-
-    if (!button) return false;
-    button.click();
-    return true;
   }
 
   function findInjectionHost() {
@@ -273,7 +263,7 @@
     }
   };
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function init() {
     const host = findInjectionHost();
     if (host && !document.getElementById("shareStateBtn")) {
       insertButton(host, createShareButton());
@@ -283,10 +273,15 @@
     if (!savedState) return;
 
     const restoredIds = restoreState(savedState);
-    autoApplyState(restoredIds);
 
     if (window.showToast) {
       window.showToast("已从分享链接恢复数据", "info", 2500);
     }
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

@@ -9,7 +9,7 @@
  * 存储键: autosave_{projectId}  (从 URL 路径自动推导)
  */
 (function () {
-  document.addEventListener("DOMContentLoaded", function () {
+  function init() {
     const form = document.getElementById("form") || document.querySelector(".form");
     if (!form) return;
 
@@ -31,6 +31,9 @@
         localStorage.setItem(key, value);
         return true;
       } catch (_e) {
+        if (_e.name === "QuotaExceededError" && window.showToast) {
+          window.showToast("存储配额超限，未能保存数据", "warn", 2500);
+        }
         return false;
       }
     }
@@ -49,6 +52,8 @@
       if (!el || !el.id || el.disabled) return false;
       if (el.dataset.autosave === "false") return false;
       if (el.type === "file" || el.type === "password") return false;
+      const markers = (el.id + " " + (el.name || "") + " " + (el.className || "")).toLowerCase();
+      if (/(api[-_ ]?key|secret|token|password)/.test(markers)) return false;
       return true;
     }
 
@@ -129,5 +134,11 @@
 
     // Restore on load
     restore();
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

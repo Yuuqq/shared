@@ -24,8 +24,8 @@ the [`Yuuqq/P00`–`Yuuqq/P50`](https://github.com/Yuuqq) series.
 | `dark-toggle.js` | Floating dark/light toggle (bottom-right), system theme follow, cross-tab sync, theme-color meta sync | auto on script include |
 | `global-nav.js` | ⌘K command palette + bottom-right gnav-fab; cross-tool jump | auto on script include |
 | `onboarding.js` | High-light ring + step tooltips that follow scroll/resize | auto on script include (auto-starts per-project tips on DOMContentLoaded; no global function exported) |
-| `autosave.js` | Form state → `localStorage` per tool | auto on `<form data-autosave>` |
-| `url-state.js` | Input state ↔ URL hash sync | auto on `<input data-url-state>` |
+| `autosave.js` | Form state → `localStorage` per tool | auto on `<form id="form" class="form">` |
+| `url-state.js` | Input state ↔ URL hash sync | auto on Valid input fields in page |
 | `toast.js` | Top-center transient messages | `window.showToast(message, type, duration)` — type: `"success"|"info"|"warn"|"error"` |
 
 ### Utility layer

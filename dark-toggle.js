@@ -140,38 +140,9 @@
     // clear of permanent overlays.
     // iOS safe-area: home indicator can overlap bottom 34px on iPhone X+,
     // so add env() inset (falls back to 0 on non-iOS browsers).
-    btn.style.cssText = [
-      "position:fixed",
-      "bottom:calc(72px + env(safe-area-inset-bottom, 0px))",
-      "right:calc(16px + env(safe-area-inset-right, 0px))",
-      "z-index:9999",
-      "width:44px", "height:44px", "border-radius:50%",
-      "border:2px solid var(--line)", "background:var(--card)",
-      "color:var(--ink)", "font-size:22px", "cursor:pointer",
-      "display:flex", "align-items:center", "justify-content:center",
-      "box-shadow:0 2px 8px rgba(0,0,0,0.15)", "transition:all .2s ease",
-      "line-height:1", "padding:0"
-    ].join(";");
+    btn.className = "dark-toggle-btn";
 
-    // Mobile: tighter spacing to mirror gnav-fab's @media (max-width:600px)
-    // override (which uses bottom:12 right:12).
-    if (window.matchMedia && window.matchMedia("(max-width: 600px)").matches) {
-      btn.style.bottom = "calc(68px + env(safe-area-inset-bottom, 0px))";
-      btn.style.right = "calc(12px + env(safe-area-inset-right, 0px))";
-    }
-
-    // Hide both floating widgets in print to avoid them appearing in PDFs
-    // (gnav already self-hides via @media print; mirror that for parity).
-    var darkPrintStyle = document.getElementById("darkTogglePrintStyle");
-    if (!darkPrintStyle) {
-      darkPrintStyle = document.createElement("style");
-      darkPrintStyle.id = "darkTogglePrintStyle";
-      darkPrintStyle.textContent = "@media print { #darkToggleBtn { display: none !important; } }";
-      document.head.appendChild(darkPrintStyle);
-    }
     syncToggleButton(btn, document.documentElement.getAttribute("data-theme") || getPreferred());
-    btn.addEventListener("mouseenter", function() { btn.style.transform = "scale(1.1)"; });
-    btn.addEventListener("mouseleave", function() { btn.style.transform = "scale(1)"; });
     btn.addEventListener("click", function () {
       const current = document.documentElement.getAttribute("data-theme") || getPreferred();
       applyTheme(current === "dark" ? "light" : "dark", { persist: true });
@@ -181,18 +152,6 @@
 
   function ensureCopyrightFooter() {
     if (!document.body || document.querySelector("[data-shared-copyright]")) return;
-
-    var style = document.getElementById("sharedCopyrightStyle");
-    if (!style) {
-      style = document.createElement("style");
-      style.id = "sharedCopyrightStyle";
-      style.textContent = [
-        ".shared-created-by{margin:20px 0 12px;padding:0 16px;text-align:center;font-size:12px;line-height:1.5;color:var(--ink-secondary,#666);opacity:.88}",
-        ".shared-created-by a{color:inherit;text-decoration:none}",
-        "@media print{.shared-created-by{margin-top:12px;color:#666}}"
-      ].join("");
-      document.head.appendChild(style);
-    }
 
     var footer = document.createElement("div");
     footer.className = "shared-created-by";

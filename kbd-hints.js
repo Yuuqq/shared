@@ -27,7 +27,7 @@
     ]
   };
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function init() {
     // Detect project ID from URL
     const pathParts = location.pathname.split("/").filter(Boolean);
     const projectFolder = pathParts.find(p => /^P\d/.test(p)) || "";
@@ -77,5 +77,11 @@
     });
 
     document.body.appendChild(bar);
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

@@ -211,38 +211,6 @@
     return (specific.length ? specific : buildGenericTips()).filter((tip) => document.querySelector(tip.target));
   }
 
-  function ensureStyle() {
-    if (document.getElementById(FLOW_STYLE_ID)) return;
-    const style = document.createElement("style");
-    style.id = FLOW_STYLE_ID;
-    style.textContent = `
-.flow-guide{margin:16px 0;border:1px solid var(--line,#ddd);border-radius:14px;background:var(--card,#fff);box-shadow:0 6px 18px rgba(0,0,0,.06);overflow:hidden}
-.flow-guide summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.flow-guide summary::-webkit-details-marker{display:none}
-.flow-guide summary span{color:var(--ink-secondary,#6b7280);font-size:.92rem;font-weight:500}
-.flow-guide-body{padding:0 18px 16px}
-.flow-guide-list{margin:0;padding-left:20px;display:grid;gap:8px;color:var(--ink,#111827);line-height:1.65}
-.flow-guide-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.flow-guide-btn{border:1px solid var(--line,#ddd);background:var(--card,#fff);color:var(--ink,#111827);padding:8px 12px;border-radius:999px;cursor:pointer;font:inherit}
-.flow-guide-btn.primary{background:var(--accent,#c7491f);border-color:var(--accent,#c7491f);color:#fff}
-.onboarding-ring{position:fixed;border:2px solid var(--accent,#c7491f);border-radius:10px;z-index:99997;pointer-events:none;animation:onboardingPulse 1.5s ease infinite;box-shadow:0 0 0 9999px rgba(15,23,42,.08)}
-.onboarding-tip{position:fixed;z-index:99998;background:var(--card,#fff);border:1px solid var(--line,#ddd);border-radius:12px;padding:12px 14px;box-shadow:0 16px 40px rgba(0,0,0,.2);width:min(320px,calc(100vw - 24px));color:var(--ink,#111827);font:14px/1.55 var(--font-sans,system-ui)}
-.onboarding-tip-title{font-weight:700;margin-bottom:6px}
-.onboarding-tip-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px}
-.onboarding-tip-actions button{border:none;border-radius:8px;padding:7px 12px;cursor:pointer;font:inherit}
-.onboarding-tip-actions .ghost{background:transparent;color:var(--ink-secondary,#6b7280)}
-.onboarding-tip-actions .primary{background:var(--accent,#c7491f);color:#fff}
-@keyframes onboardingPulse{0%,100%{box-shadow:0 0 0 0 rgba(199,73,31,.22),0 0 0 9999px rgba(15,23,42,.08)}50%{box-shadow:0 0 0 8px rgba(199,73,31,0),0 0 0 9999px rgba(15,23,42,.08)}}
-@media (max-width:640px){
-  .flow-guide summary{padding:12px 14px;align-items:flex-start;flex-direction:column}
-  .flow-guide-body{padding:0 14px 14px}
-  .flow-guide-actions{flex-direction:column;align-items:stretch}
-  .flow-guide-btn{width:100%;text-align:center}
-}
-    `.trim();
-    document.head.appendChild(style);
-  }
-
   function insertFlowGuide(projectId, tips, startTour, storageKey) {
     if (!tips.length || document.querySelector(".flow-guide")) return;
     const main = document.querySelector("main");
@@ -258,7 +226,7 @@
       </summary>
       <div class="flow-guide-body">
         <ol class="flow-guide-list">
-          ${tips.map((tip) => `<li>${tip.text}</li>`).join("")}
+          ${tips.map((tip) => `<li>${escapeHtml(tip.text)}</li>`).join("")}
         </ol>
         <div class="flow-guide-actions">
           <button type="button" class="flow-guide-btn primary" data-action="tour">高亮引导</button>
@@ -282,6 +250,10 @@
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
   function createTour(tips, storageKey) {
@@ -349,7 +321,7 @@
         tooltip.className = "onboarding-tip";
         tooltip.innerHTML = `
           <div class="onboarding-tip-title">操作引导 ${step + 1}/${tips.length}</div>
-          <div>${tip.text}</div>
+          <div>${escapeHtml(tip.text)}</div>
           <div class="onboarding-tip-actions">
             <button type="button" class="ghost" data-action="skip">跳过</button>
             <button type="button" class="primary" data-action="next">${step < tips.length - 1 ? "下一步" : "完成"}</button>
@@ -429,7 +401,7 @@
     };
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function init() {
     const projectId = detectProjectId();
     if (!projectId) return;
 
@@ -437,13 +409,17 @@
     const tips = resolveTips(projectId);
     if (!tips.length) return;
 
-    ensureStyle();
-
     const tour = createTour(tips, storageKey);
     insertFlowGuide(projectId, tips, (force) => tour.start(force), storageKey);
 
     if (!safeGetItem(storageKey)) {
       setTimeout(() => tour.start(false), 700);
     }
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

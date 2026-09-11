@@ -18,11 +18,7 @@
     container.setAttribute("aria-label", "页面消息");
     container.setAttribute("aria-live", "polite");
     container.setAttribute("aria-relevant", "additions");
-    container.style.cssText = [
-      "position:fixed", "top:56px", "right:16px", "z-index:99998",
-      "display:flex", "flex-direction:column", "gap:8px",
-      "pointer-events:none", "max-width:360px"
-    ].join(";");
+    container.className = "toast-container";
     document.body.appendChild(container);
     return container;
   }
@@ -52,15 +48,9 @@
     toast.setAttribute("role", isAssertive ? "alert" : "status");
     toast.setAttribute("aria-live", isAssertive ? "assertive" : "polite");
     toast.setAttribute("aria-atomic", "true");
-    toast.style.cssText = [
-      `background:${c.bg}`, `border-left:4px solid ${c.border}`,
-      "padding:10px 14px", "border-radius:8px", "font-size:13px",
-      "color:var(--ink,#1a1a1a)", "box-shadow:0 4px 12px rgba(0,0,0,0.12)",
-      "display:flex", "align-items:center", "gap:8px",
-      "pointer-events:auto", "cursor:pointer",
-      "animation:toastSlideIn .25s ease-out",
-      "font-family:var(--font-sans,system-ui)"
-    ].join(";");
+    toast.className = "toast-item";
+    toast.style.background = c.bg;
+    toast.style.borderLeftColor = c.border;
 
     toast.innerHTML = `<span aria-hidden="true">${ICONS[type] || ""}</span><span style="flex:1">${escapeHtml(message)}</span><span aria-hidden="true" style="opacity:0.4;font-size:11px">✕</span>`;
     toast.addEventListener("click", () => removeToast(toast));
@@ -77,12 +67,4 @@
     el.style.animation = "toastSlideOut .2s ease-in forwards";
     setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 200);
   }
-
-  // Inject animation keyframes
-  const style = document.createElement("style");
-  style.textContent = `
-    @keyframes toastSlideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    @keyframes toastSlideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
-  `;
-  document.head.appendChild(style);
 })();

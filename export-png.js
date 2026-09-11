@@ -9,7 +9,7 @@
  * 对于 ECharts 图表，直接调用 chart.getDataURL()。
  */
 (function () {
-  document.addEventListener("DOMContentLoaded", function () {
+  function init() {
     const btn = document.getElementById("exportPngBtn");
     if (!btn) return;
 
@@ -44,13 +44,27 @@
         btn.textContent = "📸 导出 PNG";
       }
     });
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 
   function downloadCanvas(canvas, filename) {
     const link = document.createElement("a");
     link.download = filename;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    try {
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (err) {
+      if (window.showToast) {
+        window.showToast("Canvas 导出失败：图片可能受跨域限制 (CORS)", "error", 4000);
+      } else {
+        alert("Canvas 导出失败：图片可能受跨域限制 (CORS)");
+      }
+    }
   }
 
   async function domToImage(element, filename) {

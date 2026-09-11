@@ -47,10 +47,24 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Skip non-GET and cross-origin API calls
+  // Skip non-GET requests
   if (event.request.method !== "GET") return;
-  if (url.origin !== self.location.origin) return;
 
+  if (url.origin !== self.location.origin) {
+    // Network-First for cross-origin API calls
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache-First for same-origin static assets
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) {
