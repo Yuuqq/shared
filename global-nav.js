@@ -75,88 +75,6 @@
     const MAX_RECENT = 5;
 
     /* ---------- DOM 构造 ---------- */
-    const styleEl = document.createElement("style");
-    styleEl.textContent = `
-        .gnav-fab {
-            /* iOS safe-area: home indicator + landscape notch insets */
-            position: fixed;
-            right: calc(16px + env(safe-area-inset-right, 0px));
-            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-            z-index: 9998;
-            width: 44px; height: 44px; border-radius: 50%; border: none;
-            background: var(--accent, #c7491f); color: #fff; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; transition: transform .2s, box-shadow .2s;
-        }
-        .gnav-fab:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(0,0,0,0.28); }
-        .gnav-fab:focus-visible { outline: 3px solid var(--accent, #c7491f); outline-offset: 3px; }
-        .gnav-overlay {
-            position: fixed; inset: 0; z-index: 9999;
-            background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
-            display: none; align-items: flex-start; justify-content: center;
-            padding: 80px 16px 16px; animation: gnavFade .15s ease-out;
-        }
-        .gnav-overlay.open { display: flex; }
-        @keyframes gnavFade { from { opacity: 0 } to { opacity: 1 } }
-        .gnav-panel {
-            width: 100%; max-width: 560px; max-height: 70vh;
-            background: var(--card, #fff); color: var(--ink, #1a1a1a);
-            border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; overflow: hidden;
-            animation: gnavSlide .2s ease-out;
-        }
-        @keyframes gnavSlide { from { transform: translateY(-12px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
-        .gnav-search {
-            border: none; outline: none; padding: 16px 20px; font-size: 16px;
-            background: transparent; color: inherit; border-bottom: 1px solid var(--line, #ddd);
-            font-family: inherit;
-        }
-        .gnav-list { flex: 1; overflow-y: auto; padding: 4px; }
-        .gnav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 10px 14px; border-radius: 8px; cursor: pointer;
-            font-size: 14px; line-height: 1.4;
-        }
-        .gnav-item.active, .gnav-item:hover {
-            background: var(--accent-light, rgba(199,73,31,0.08));
-        }
-        .gnav-id {
-            display: inline-block; min-width: 36px; font-family: var(--font-mono, monospace);
-            font-size: 11px; padding: 2px 6px; border-radius: 4px;
-            background: var(--line, #eee); color: var(--ink-secondary, #666);
-            text-align: center;
-        }
-        .gnav-meta { flex: 1; min-width: 0; }
-        .gnav-title { font-weight: 600; }
-        .gnav-desc { font-size: 12px; color: var(--ink-secondary, #888); }
-        .gnav-cat {
-            font-size: 11px; padding: 2px 8px; border-radius: 999px;
-            background: var(--accent-light, rgba(199,73,31,0.08));
-            color: var(--accent, #c7491f); white-space: nowrap;
-        }
-        .gnav-section {
-            padding: 6px 14px; font-size: 11px; font-weight: 600;
-            color: var(--ink-secondary, #888); text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .gnav-empty { padding: 24px; text-align: center; color: var(--ink-secondary, #888); }
-        .gnav-footer {
-            padding: 8px 14px; font-size: 11px; color: var(--ink-secondary, #888);
-            border-top: 1px solid var(--line, #ddd); display: flex; gap: 14px; justify-content: center;
-        }
-        .gnav-kbd {
-            display: inline-block; padding: 1px 6px; border-radius: 3px;
-            background: var(--line, #eee); font-family: var(--font-mono, monospace); font-size: 10px;
-        }
-        @media (max-width: 600px) {
-            .gnav-fab { right: calc(12px + env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
-            .gnav-overlay { padding-top: 40px; }
-        }
-        @media print { .gnav-fab, .gnav-overlay { display: none !important; } }
-    `;
-    document.head.appendChild(styleEl);
-
     const fab = document.createElement("button");
     fab.className = "gnav-fab";
     fab.setAttribute("aria-label", "打开 51 工具快速导航 (⌘K)");
@@ -208,6 +126,9 @@
     const currentSlug = detectCurrentSlug();
 
     function buildTargetUrl(slug) {
+        if (window.Shared && window.Shared.loader && window.Shared.loader.base) {
+            return window.Shared.loader.base.replace(/\/shared\/(releases\/[^/]+\/)?$/, "/") + slug + "/index.html";
+        }
         // 从当前路径定位 P##-* 段，从其根重建邻居 URL，支持子页面情况
         // /foo/P29-x/index.html → /foo/P29-x/  → root=/foo/  → /foo/P02-y/index.html
         // /foo/P29-x/sub/page.html → root=/foo/  → /foo/P02-y/index.html
