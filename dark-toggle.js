@@ -59,7 +59,7 @@
 
   function syncThemeColor(theme) {
     const computedBg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
-    const content = computedBg || (theme === "dark" ? "#1a1a2e" : "#f4f0e8");
+    const content = computedBg || (theme === "dark" ? "#241B11" : "#F0E6CF");
     const allMetas = Array.from(document.querySelectorAll('meta[name="theme-color"]'));
 
     // Preserve a properly authored media-qualified pair, e.g.
@@ -145,8 +145,8 @@
       "bottom:calc(72px + env(safe-area-inset-bottom, 0px))",
       "right:calc(16px + env(safe-area-inset-right, 0px))",
       "z-index:9999",
-      "width:44px", "height:44px", "border-radius:50%",
-      "border:2px solid var(--line)", "background:var(--card)",
+      "border-radius:4px",
+      "border:1.5px solid var(--cinnabar,#A2402F)", "background:var(--paper-hi,#F7EFDA)",
       "color:var(--ink)", "font-size:22px", "cursor:pointer",
       "display:flex", "align-items:center", "justify-content:center",
       "box-shadow:0 2px 8px rgba(0,0,0,0.15)", "transition:all .2s ease",

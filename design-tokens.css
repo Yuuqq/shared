@@ -1,35 +1,49 @@
 /**
- * 共享设计令牌 — 50 个新闻工具统一视觉规范
- * 各项目在 styles.css 中可覆盖 :root 变量实现局部定制。
+ * 共享设计令牌 — CSS Lab 羊皮纸手稿方言（JOU2327A）
+ * 50 个新闻工具统一视觉规范。变量名保持兼容，色值对齐羊皮纸学术系统。
  * 引入方式：<link rel="stylesheet" href="./shared/design-tokens.css" />
  */
 
-/* ===== Light Mode ===== */
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;600;700&display=swap");
+
+/* ===== Light Mode（羊皮纸） ===== */
 :root {
     /* 基础色 */
-    --bg: #f4f0e8;
-    --card: #ffffff;
-    --ink: #1a1a1a;
-    --ink-secondary: #4a4a4a;
-    --line: #e0d8cc;
+    --bg: #F0E6CF;
+    --card: #F7EFDA;
+    --ink: #3A2E20;
+    --ink-secondary: #6E5B41;
+    --line: #D3C4A0;
 
-    /* 品牌强调色 */
-    --accent: #c7491f;
-    --accent-hover: #a63a18;
-    --accent-light: rgba(199, 73, 31, 0.08);
+    /* 品牌强调色 — 朱砂 */
+    --accent: #A2402F;
+    --accent-hover: #7C2F22;
+    --accent-light: rgba(162, 64, 47, 0.08);
 
-    /* 功能色 */
-    --ok: #0b7a3b;
-    --ok-light: #e8f5ee;
-    --warn: #b86e00;
-    --warn-light: #fef7e0;
-    --bad: #a61f12;
-    --bad-light: #fdecea;
+    /* 功能色 — 铜绿 / 暗金 / 朱砂 */
+    --ok: #51724B;
+    --ok-light: rgba(81, 114, 75, 0.14);
+    --warn: #8C6A2F;
+    --warn-light: rgba(140, 106, 47, 0.14);
+    --bad: #A2402F;
+    --bad-light: rgba(162, 64, 47, 0.14);
 
     /* 排版 */
-    --font-sans: "IBM Plex Sans", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
-    --font-serif: "IBM Plex Serif", "Source Han Serif SC", "Noto Serif SC", serif;
-    --font-mono: "IBM Plex Mono", "Fira Code", "Menlo", monospace;
+    --font-sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    --font-serif: "Kaiti SC", "STKaiti", "KaiTi", "Noto Serif SC", "Songti SC", "SimSun", serif;
+    --font-mono: "SF Mono", ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace;
+    --hei: var(--font-sans);
+    --kai: var(--font-serif);
+    --latin: "EB Garamond", Georgia, "Times New Roman", serif;
+    --paper: #F0E6CF;
+    --paper-2: #E8DCBC;
+    --paper-3: #EFE4C6;
+    --paper-hi: #F7EFDA;
+    --cinnabar: #A2402F;
+    --gold: #8C6A2F;
+    --indigo: #33567C;
+    --verdigris: #51724B;
+    --ink-panel: #241B11;
 
     /* 间距 */
     --space-xs: 4px;
@@ -38,62 +52,68 @@
     --space-lg: 24px;
     --space-xl: 32px;
 
-    /* 圆角 */
-    --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-pill: 999px;
+    /* 圆角 — 方，不是圆 */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-pill: 4px;
 
-    /* 阴影 */
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
-    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* 阴影 — 暖褐弱影 */
+    --shadow-card: 0 2px 14px rgba(107, 90, 68, 0.16);
+    --shadow-hover: 0 10px 26px rgba(107, 90, 68, 0.24);
 }
 
 /* ===== Dark Mode (auto + manual toggle) ===== */
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-        --bg: #1a1a2e;
-        --card: #242438;
-        --ink: #e8e8f0;
-        --ink-secondary: #aaa;
-        --line: #3a3a50;
+        --bg: #241B11;
+        --card: #2F2618;
+        --ink: #F7EFDA;
+        --ink-secondary: #D3C4A0;
+        --line: #5C4A32;
 
-        --accent: #ff7b54;
-        --accent-hover: #ff9268;
-        --accent-light: rgba(255, 123, 84, 0.12);
+        --accent: #C45A45;
+        --accent-hover: #E07A66;
+        --accent-light: rgba(196, 90, 69, 0.16);
 
-        --ok: #4ade80;
-        --ok-light: rgba(74, 222, 128, 0.12);
-        --warn: #fbbf24;
-        --warn-light: rgba(251, 191, 36, 0.12);
-        --bad: #f87171;
-        --bad-light: rgba(248, 113, 113, 0.12);
+        --ok: #7A9A74;
+        --ok-light: rgba(81, 114, 75, 0.22);
+        --warn: #C4A15A;
+        --warn-light: rgba(140, 106, 47, 0.22);
+        --bad: #C45A45;
+        --bad-light: rgba(196, 90, 69, 0.22);
 
-        --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+        --paper: #241B11;
+        --paper-hi: #2F2618;
+        --cinnabar: #C45A45;
+        --shadow-card: 0 2px 14px rgba(0, 0, 0, 0.35);
+        --shadow-hover: 0 10px 26px rgba(0, 0, 0, 0.45);
     }
 }
 
-/* Manual dark mode override */
+/* Manual dark mode override — 乌丝栏墨底，不是海军蓝 */
 :root[data-theme="dark"] {
-    --bg: #1a1a2e;
-    --card: #242438;
-    --ink: #e8e8f0;
-    --ink-secondary: #aaa;
-    --line: #3a3a50;
+    --bg: #241B11;
+    --card: #2F2618;
+    --ink: #F7EFDA;
+    --ink-secondary: #D3C4A0;
+    --line: #5C4A32;
 
-    --accent: #ff7b54;
-    --accent-hover: #ff9268;
-    --accent-light: rgba(255, 123, 84, 0.12);
+    --accent: #C45A45;
+    --accent-hover: #E07A66;
+    --accent-light: rgba(196, 90, 69, 0.16);
 
-    --ok: #4ade80;
-    --ok-light: rgba(74, 222, 128, 0.12);
-    --warn: #fbbf24;
-    --warn-light: rgba(251, 191, 36, 0.12);
-    --bad: #f87171;
-    --bad-light: rgba(248, 113, 113, 0.12);
+    --ok: #7A9A74;
+    --ok-light: rgba(81, 114, 75, 0.22);
+    --warn: #C4A15A;
+    --warn-light: rgba(140, 106, 47, 0.22);
+    --bad: #C45A45;
+    --bad-light: rgba(196, 90, 69, 0.22);
 
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --paper: #241B11;
+    --paper-hi: #2F2618;
+    --cinnabar: #C45A45;
+    --shadow-card: 0 2px 14px rgba(0, 0, 0, 0.35);
+    --shadow-hover: 0 10px 26px rgba(0, 0, 0, 0.45);
 }
 
 /* ===== Global Reset ===== */
@@ -108,7 +128,7 @@ body {
     color: var(--ink);
     background: var(--bg);
     font-family: var(--font-sans);
-    line-height: 1.6;
+    line-height: 1.75;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -140,8 +160,8 @@ body, .card, .hero, button, input, select, textarea, a {
 
 /* ===== Text Selection ===== */
 ::selection {
-    background: var(--accent);
-    color: #fff;
+    background: rgba(162, 64, 47, 0.18);
+    color: var(--ink);
 }
 
 /* ===== Page Entrance Animation ===== */
@@ -170,19 +190,19 @@ button, .btn, [type="button"], [type="submit"] {
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    border: none;
+    border: 1px solid transparent;
     padding: 8px 18px;
     border-radius: var(--radius-sm);
     font-family: inherit;
     font-size: 0.9rem;
-    font-weight: 500;
-    background: var(--accent);
-    color: #fff;
+    font-weight: 600;
+    background: var(--ink);
+    color: var(--paper-hi);
     transition: transform 80ms ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 button:hover, .btn:hover {
-    background: var(--accent-hover);
-    box-shadow: 0 2px 8px rgba(199, 73, 31, 0.25);
+    background: var(--ink-panel);
+    box-shadow: var(--shadow-card);
 }
 button:active, .btn:active {
     transform: scale(0.97);
@@ -229,44 +249,20 @@ input:focus, textarea:focus, select:focus {
     outline: none;
 }
 
-/* ===== Gradient Heading ===== */
+/* ===== Hero heading — 楷体墨字，不做渐变填色 ===== */
 .hero h1, h1.gradient {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--warn, #b86e00) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .hero h1,
-    :root:not([data-theme="light"]) h1.gradient {
-        background: linear-gradient(135deg, #ff7b54 0%, #fbbf24 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-    }
-}
-:root[data-theme="dark"] .hero h1,
-:root[data-theme="dark"] h1.gradient {
-    background: linear-gradient(135deg, #ff7b54 0%, #fbbf24 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
+    font-family: var(--kai);
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    background: none;
+    -webkit-text-fill-color: unset;
 }
 
-/* ===== Glassmorphism Utility ===== */
+/* ===== 纸面高光，不是玻璃拟态 ===== */
 .glass {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-:root[data-theme="dark"] .glass {
-    background: rgba(36, 36, 56, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .glass {
-        background: rgba(36, 36, 56, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-    }
+    background: var(--paper-hi);
+    border: 1px solid var(--line);
+    backdrop-filter: none;
 }
 
 /* ===== Skeleton Loading ===== */
@@ -553,9 +549,9 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
     --leading-relaxed:  1.75;  /* 长篇阅读 */
 
     /* Tracking */
-    --tracking-tight:  -0.02em; /* 大标题 */
-    --tracking-normal: 0;
-    --tracking-wide:   0.04em;  /* 全大写小标签 */
+    --tracking-tight:  0.06em; /* 中文标题开字距 */
+    --tracking-normal: 0.02em;
+    --tracking-wide:   0.14em;  /* 西文图号 */
 }
 
 /* 默认排版基线 — 仅 body/label/small（这些值原本就高度趋同，不破坏 hierarchy） */
@@ -603,9 +599,9 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
     line-height: var(--leading-snug);
 }
 
-/* CJK 友好：负字距对中文不利，强制中文区域 letter-spacing:0 */
-:where(:lang(zh)) :where(h1, h2, h3, h4, h5, h6) {
-    letter-spacing: 0;
+/* 中文标题开字距（羊皮纸） */
+:where(:lang(zh)) :where(h1, h2, h3) {
+    letter-spacing: 0.06em;
 }
 
 /* =====================================================================
@@ -617,7 +613,7 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
 /* P1 Accessibility — 焦点环属性（被前面的非:where焦点规则正确覆盖；
    保留作为没有自定义焦点样式的工具的兜底）。 */
 :where(:focus-visible) {
-    outline: 3px solid var(--accent, #2563eb);
+    outline: 2px solid var(--cinnabar, #A2402F);
     outline-offset: 2px;
     transition: outline-offset 0.12s ease;
 }
@@ -671,7 +667,7 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
     line-height: var(--leading-snug, 1.4);
 }
 :where(input:focus-visible, textarea:focus-visible, select:focus-visible) {
-    outline: 2px solid var(--accent, #2563eb);
+    outline: 2px solid var(--cinnabar, #A2402F);
     outline-offset: 1px;
 }
 :where(input:disabled, textarea:disabled, select:disabled, button:disabled) {
@@ -720,8 +716,8 @@ html:not(.fonts-ready) body { opacity: 1; }   /* 不阻塞，仅占位 */
 
 /* P6 Selection — 统一文本选中色（很多工具默认浏览器蓝，与品牌色冲突） */
 :where(::selection) {
-    background: rgba(37, 99, 235, 0.28); /* fallback for browsers without color-mix */
-    background: color-mix(in srgb, var(--accent, #2563eb) 28%, transparent);
+    background: rgba(162, 64, 47, 0.18);
+    background: color-mix(in srgb, var(--cinnabar, #A2402F) 18%, transparent);
     color: inherit;
 }
 

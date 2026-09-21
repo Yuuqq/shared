@@ -1,473 +1,312 @@
 /**
- * 现代化增强样式 - 50个新闻工具统一视觉升级
- * 在 design-tokens.css 基础上添加现代化效果
- * 引入方式：<link rel="stylesheet" href="../shared/modern-styles.css" />
+ * 羊皮纸手稿风 — CSS Lab 设计语言（教学门户方言）
+ * 活标本：https://jou2327a.aisbest.eu.cc/parchment.css
+ * 压过各工具本地 styles.css 中的蓝渐变 / 大圆角 / Inter。
  */
 
-/* ===== 现代化色彩系统 ===== */
 :root {
-    /* 更现代的背景色 */
-    --bg-modern: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    --bg-gradient: radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
-                    radial-gradient(circle at 40% 80%, rgba(96, 165, 250, 0.03) 0%, transparent 50%);
-    
-    /* 现代化强调色 */
-    --accent-modern: #2563eb;
-    --accent-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
-    --accent-glow: 0 0 20px rgba(37, 99, 235, 0.3);
-    
-    /* 现代化阴影 */
-    --shadow-modern: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-                     0 2px 4px -2px rgba(0, 0, 0, 0.06);
-    --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                      0 4px 6px -4px rgba(0, 0, 0, 0.05);
-    --shadow-floating: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-                       0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --bg: #F0E6CF !important;
+    --card: #F7EFDA !important;
+    --ink: #3A2E20 !important;
+    --ink-secondary: #6E5B41 !important;
+    --line: #D3C4A0 !important;
+    --accent: #A2402F !important;
+    --accent-hover: #7C2F22 !important;
+    --accent-light: rgba(162, 64, 47, 0.08) !important;
+    --font-sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif !important;
+    --font-serif: "Kaiti SC", "STKaiti", "KaiTi", "Noto Serif SC", "Songti SC", "SimSun", serif !important;
+    --font-mono: "SF Mono", ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace !important;
+    --radius-sm: 4px !important;
+    --radius-md: 6px !important;
+    --radius-pill: 4px !important;
+    --shadow-card: 0 2px 14px rgba(107, 90, 68, 0.16) !important;
+    --shadow-hover: 0 10px 26px rgba(107, 90, 68, 0.24) !important;
+    --kai: "Kaiti SC", "STKaiti", "KaiTi", "Noto Serif SC", "Songti SC", "SimSun", serif;
+    --hei: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    --latin: "EB Garamond", Georgia, "Times New Roman", serif;
+    --cinnabar: #A2402F;
+    --gold: #8C6A2F;
+    --paper-hi: #F7EFDA;
+    --paper-3: #EFE4C6;
+    --ink-panel: #241B11;
 }
 
-/* ===== 现代化背景 ===== */
+:root[data-theme="dark"] {
+    --bg: #241B11 !important;
+    --card: #2F2618 !important;
+    --ink: #F7EFDA !important;
+    --ink-secondary: #D3C4A0 !important;
+    --line: #5C4A32 !important;
+    --accent: #C45A45 !important;
+    --accent-hover: #E07A66 !important;
+    --paper-hi: #2F2618 !important;
+    --paper-3: #2A2216 !important;
+    --cinnabar: #C45A45 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #241B11 !important;
+        --card: #2F2618 !important;
+        --ink: #F7EFDA !important;
+        --ink-secondary: #D3C4A0 !important;
+        --line: #5C4A32 !important;
+        --accent: #C45A45 !important;
+    }
+}
+
 body {
-    background: var(--bg-gradient), var(--bg) !important;
-    background-attachment: fixed !important;
+    background: var(--bg) !important;
+    color: var(--ink) !important;
+    font-family: var(--hei) !important;
+    line-height: 1.75 !important;
 }
 
-/* ===== gnav spacer + safe padding ===== */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(1100px 700px at 16% 6%, rgba(255, 250, 235, 0.55), transparent 60%),
+        radial-gradient(900px 620px at 86% 92%, rgba(156, 137, 100, 0.14), transparent 62%),
+        radial-gradient(6px 5px at 12% 22%, rgba(140, 106, 47, 0.1), transparent 70%);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.45;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.29 0 0 0 0 0.18 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+
+main, .app, .wrap, .container {
+    position: relative;
+    z-index: 1;
+}
+
 main, .app {
-    padding-top: 48px !important;
-    padding-left: max(16px, var(--page-pad, 16px)) !important;
-    padding-right: max(16px, var(--page-pad, 16px)) !important;
+    padding-top: 48px;
 }
 
-.card, .panel, .hero, header, section, article {
-    padding-left: max(14px, var(--card-pad, 14px)) !important;
-    padding-right: max(14px, var(--card-pad, 14px)) !important;
+h1, h2, h3, .hero h1 {
+    font-family: var(--kai) !important;
+    font-weight: 700;
+    letter-spacing: 0.06em !important;
+    color: var(--ink) !important;
+    background: none !important;
+    -webkit-text-fill-color: unset !important;
+    background-clip: unset !important;
 }
 
-/* ===== 现代化卡片设计 ===== */
-.card, .panel, .container > div, section {
-    background: var(--card) !important;
-    border: 1px solid var(--line) !important;
-    border-radius: 16px !important;
-    box-shadow: var(--shadow-modern) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    position: relative;
-    overflow: hidden;
+.hero h1 .em,
+h1 .em {
+    color: var(--cinnabar) !important;
 }
 
-.card:hover, .panel:hover, section:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-elevated) !important;
-    border-color: var(--accent-modern) !important;
+a {
+    color: var(--cinnabar) !important;
+    text-decoration: none;
+}
+a:hover {
+    color: var(--accent-hover) !important;
+}
+a::after {
+    content: none !important;
 }
 
-/* 卡片顶部渐变边框效果 */
-.card::before, .panel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--accent-gradient);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.card:hover::before, .panel:hover::before {
-    opacity: 1;
-}
-
-/* ===== 现代化Hero区域 ===== */
+/* 扉页框 */
 .hero {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%) !important;
-    border: 1px solid var(--line) !important;
-    border-radius: 20px !important;
-    padding: 32px !important;
-    margin-bottom: 24px !important;
-    box-shadow: var(--shadow-modern) !important;
+    background: linear-gradient(160deg, var(--paper-hi), var(--paper-3)) !important;
+    border: 1px solid rgba(162, 64, 47, 0.4) !important;
+    outline: 1px solid rgba(199, 177, 137, 0.8);
+    outline-offset: 5px;
+    border-radius: 3px !important;
+    box-shadow: var(--shadow-card) !important;
+    padding: 28px 24px !important;
+    margin-bottom: 22px !important;
     position: relative;
-    overflow: hidden;
 }
 
 .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
-    pointer-events: none;
+    content: none !important;
 }
 
-.hero h1 {
-    background: var(--accent-gradient) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-    position: relative;
-    z-index: 1;
+/* 卡片 — 只打真实卡片，不打所有 section */
+.card, .panel, .teach-card, .mission-card, .module-card, .stat-card, article.panel {
+    background: var(--paper-3) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 6px !important;
+    box-shadow: var(--shadow-card) !important;
+    overflow: visible;
 }
 
-.hero p {
-    position: relative;
-    z-index: 1;
+.card:hover, .panel:hover, .mission-card:hover, .module-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover) !important;
+    border-color: var(--gold) !important;
 }
 
-/* ===== 现代化按钮设计 ===== */
-button, .btn, [type="button"], [type="submit"] {
-    background: var(--accent-gradient) !important;
-    border: none !important;
-    border-radius: 12px !important;
-    padding: 12px 24px !important;
+.card::before, .panel::before {
+    content: none !important;
+}
+
+.teach-card {
+    border-left: 3px solid var(--cinnabar) !important;
+}
+
+.teach-card summary {
+    color: var(--cinnabar) !important;
+    font-family: var(--kai);
+}
+
+/* 主按钮：填墨。排除页签 / 浮动控件 */
+button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]):not(.filter-btn):not(.example-btn),
+.btn:not(.btn-secondary):not(.ghost),
+[type="submit"] {
+    background: var(--ink) !important;
+    color: var(--paper-hi) !important;
+    border: 1px solid var(--ink) !important;
+    border-radius: 4px !important;
+    box-shadow: var(--shadow-card) !important;
     font-weight: 600 !important;
-    color: white !important;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2) !important;
 }
 
-button:hover, .btn:hover {
+button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]):not(.filter-btn):not(.example-btn):hover,
+.btn:not(.btn-secondary):not(.ghost):hover {
+    background: var(--ink-panel) !important;
+    color: var(--paper-hi) !important;
     transform: translateY(-2px);
-    box-shadow: var(--accent-glow) !important;
 }
 
-button:active, .btn:active {
-    transform: translateY(0) scale(0.98);
-}
-
-/* 按钮光波效果 */
-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-button:active::after {
-    width: 300px;
-    height: 300px;
-}
-
-.btn-secondary, button.secondary {
+.btn-secondary, button.secondary, .ghost, .example-btn {
     background: transparent !important;
-    border: 2px solid var(--line) !important;
-    color: var(--ink) !important;
+    color: var(--cinnabar) !important;
+    border: 1px solid rgba(162, 64, 47, 0.55) !important;
     box-shadow: none !important;
+    border-radius: 4px !important;
 }
 
-.btn-secondary:hover, button.secondary:hover {
-    background: var(--accent-light) !important;
-    border-color: var(--accent-modern) !important;
-    color: var(--accent-modern) !important;
+.btn-secondary:hover, button.secondary:hover, .ghost:hover, .example-btn:hover {
+    background: rgba(162, 64, 47, 0.08) !important;
+    color: var(--cinnabar) !important;
+    border-color: var(--cinnabar) !important;
 }
 
-/* ===== 现代化输入框设计 ===== */
+button::after, .btn::after {
+    content: none !important;
+}
+
 input, textarea, select {
-    border: 2px solid var(--line) !important;
-    border-radius: 12px !important;
-    padding: 12px 16px !important;
-    transition: all 0.3s ease !important;
-    background: var(--card) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 4px !important;
+    background: var(--paper-hi) !important;
     color: var(--ink) !important;
 }
 
 input:focus, textarea:focus, select:focus {
-    border-color: var(--accent-modern) !important;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
-    outline: none !important;
+    border-color: var(--cinnabar) !important;
+    box-shadow: 0 0 0 3px var(--accent-light) !important;
 }
 
-/* ===== 现代化教学卡片 ===== */
-.teach-card {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.03) 0%, rgba(59, 130, 246, 0.01) 100%) !important;
-    border-left: 4px solid var(--accent-modern) !important;
-    padding-left: 16px !important;
-}
-
-.teach-card summary {
-    font-weight: 600;
-    color: var(--accent-modern);
-    cursor: pointer;
-    padding: 8px 0;
-}
-
-/* ===== 现代化链接设计 ===== */
-a {
-    color: var(--accent-modern) !important;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-a:hover {
-    color: #1d4ed8 !important;
-}
-
-a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background: var(--accent-modern);
-    transition: width 0.3s ease;
-}
-
-a:hover::after {
-    width: 100%;
-}
-
-/* ===== 现代化标签和徽章 ===== */
 .badge, .tag {
-    background: var(--accent-light) !important;
-    color: var(--accent-modern) !important;
-    padding: 4px 12px !important;
-    border-radius: 20px !important;
+    background: rgba(162, 64, 47, 0.07) !important;
+    color: var(--cinnabar) !important;
+    border: 1px solid rgba(162, 64, 47, 0.3);
+    border-radius: 4px !important;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1.5px solid var(--line);
+}
+
+th {
+    font-family: var(--latin);
+    letter-spacing: 0.08em;
+    background: transparent !important;
+    color: var(--ink-secondary) !important;
     font-weight: 600;
-    font-size: 0.85rem;
 }
 
-/* ===== 现代化动画效果 ===== */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+td, th {
+    border-bottom: 1px solid var(--line);
 }
 
-.app, main, body > .container {
-    animation: fadeInUp 0.5s ease-out;
-    overflow-x: hidden;
+tr:hover {
+    background: rgba(44, 37, 23, 0.045);
 }
 
-/* ===== 现代化响应式设计 ===== */
-@media (max-width: 768px) {
-    .hero {
-        padding: 24px 20px !important;
-        border-radius: 16px !important;
-    }
-    
-    .hero h1 {
-        font-size: 1.8rem !important;
-    }
-    
-    .card, .panel, section {
-        border-radius: 12px !important;
-        padding: 20px !important;
-    }
-    
-    button, .btn {
-        width: 100%;
-        padding: 14px 20px !important;
-    }
-    
-    input, textarea, select {
-        font-size: 16px; /* 防止iOS缩放 */
-    }
+pre, code {
+    background: var(--paper-3) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 4px !important;
+    font-family: var(--font-mono) !important;
 }
 
-/* ===== 现代化滚动条 ===== */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--line);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-modern);
-}
-
-/* ===== 现代化加载状态 ===== */
-.loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    gap: 16px;
-}
-
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--line);
-    border-top-color: var(--accent-modern);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* ===== 现代化工具提示 ===== */
-[data-tooltip] {
-    position: relative;
-}
-
-[data-tooltip]::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%) scale(0.9);
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    white-space: nowrap;
-    background: var(--ink);
-    color: var(--bg);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.2s ease;
-    z-index: 100;
-    box-shadow: var(--shadow-modern);
-}
-
-[data-tooltip]:hover::before {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-}
-
-/* ===== 现代化状态指示器 ===== */
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.status-dot.success {
-    background: var(--ok);
-    box-shadow: 0 0 8px rgba(11, 122, 59, 0.4);
-}
-
-.status-dot.warning {
-    background: var(--warn);
-    box-shadow: 0 0 8px rgba(184, 110, 0, 0.4);
-}
-
-.status-dot.error {
-    background: var(--bad);
-    box-shadow: 0 0 8px rgba(166, 31, 18, 0.4);
-}
-
-/* ===== 现代化进度条 ===== */
-.progress-bar {
-    height: 8px;
-    background: var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--accent-gradient);
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-/* ===== 现代化分隔线 ===== */
 hr {
     border: none;
     height: 1px;
     background: var(--line);
-    margin: 24px 0;
 }
 
-/* ===== 现代化代码块 ===== */
-pre, code {
-    background: var(--bg-modern) !important;
-    border: 1px solid var(--line) !important;
-    border-radius: 8px !important;
-    font-family: var(--font-mono) !important;
-}
-
-code {
-    padding: 2px 6px !important;
-    font-size: 0.9em;
-}
-
-pre {
-    padding: 16px !important;
-    overflow-x: auto;
-}
-
-/* ===== 现代化表格 ===== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid var(--line);
-}
-
-th {
-    background: var(--bg-modern);
-    font-weight: 600;
-    color: var(--ink-secondary);
-}
-
-tr:hover {
-    background: var(--accent-light);
-}
-
-/* ===== 现代化图片和媒体 ===== */
 img, video {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: var(--shadow-modern);
+    border-radius: 4px;
+    box-shadow: none;
 }
 
-/* ===== 现代化焦点状态 ===== */
+.progress-fill, .mc-bar-fill {
+    background: var(--cinnabar) !important;
+    border-radius: 2px !important;
+}
+
 :focus-visible {
-    outline: 3px solid var(--accent-modern) !important;
+    outline: 2px solid var(--cinnabar) !important;
     outline-offset: 2px !important;
 }
 
-/* ===== 现代化打印样式 ===== */
-@media print {
-    body {
-        background: white !important;
-        color: black !important;
+::selection {
+    background: rgba(162, 64, 47, 0.18) !important;
+    color: var(--ink) !important;
+}
+
+@keyframes inkIn {
+    from { opacity: 0; transform: translateY(9px); }
+    to { opacity: 1; transform: none; }
+}
+
+.app, main {
+    animation: inkIn 0.55s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .app, main, .card:hover, .panel:hover {
+        animation: none !important;
+        transform: none !important;
     }
-    
-    .card, .panel, .hero {
+}
+
+@media (max-width: 768px) {
+    .hero {
+        outline-offset: 3px;
+        padding: 20px 16px !important;
+    }
+    button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]) {
+        width: auto;
+        min-height: 44px;
+    }
+}
+
+@media print {
+    body { background: #fff !important; }
+    body::before, body::after { display: none !important; }
+    .hero, .card, .panel {
+        outline: none !important;
         box-shadow: none !important;
         border: 1px solid #ccc !important;
-        break-inside: avoid;
-    }
-    
-    button, .btn {
-        display: none;
     }
 }
