@@ -139,11 +139,24 @@ a {
     color: var(--cinnabar) !important;
     text-decoration: none;
 }
+a:not(.btn):not(.map-link):not(.open-btn):not(.chip):not(.pill):not(.gnav-item) {
+    text-decoration-line: underline !important;
+    text-decoration-style: dotted !important;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+}
 a:hover {
     color: var(--accent-hover) !important;
 }
 a::after {
     content: none !important;
+}
+@media print {
+    a[href^="http"]::after {
+        content: " (" attr(href) ")" !important;
+        font-size: 0.85em;
+        word-break: break-all;
+    }
 }
 
 /* 扉页框 */
@@ -201,7 +214,7 @@ p, li, label, .hint, .empty-hint, td, th, summary {
 }
 
 /* 主按钮：填墨。排除页签 / 浮动控件 */
-button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]):not(.filter-btn):not(.example-btn),
+button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]):not(.filter-btn):not(.example-btn):not(.btn-secondary):not(.ghost):not(.secondary):not(.modal-close):not(.diff-btn):not(.filter-chip),
 .btn:not(.btn-secondary):not(.ghost),
 [type="submit"],
 .map-link {
@@ -221,12 +234,52 @@ button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]):not(.filte
     animation: none !important;
 }
 
-button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]):not(.filter-btn):not(.example-btn):hover,
+button:not(.tab):not(.gnav-fab):not(#darkToggleBtn):not([role="tab"]):not(.filter-btn):not(.example-btn):not(.btn-secondary):not(.ghost):not(.secondary):not(.modal-close):not(.diff-btn):not(.filter-chip):hover,
 .btn:not(.btn-secondary):not(.ghost):hover,
 .map-link:hover {
     background: var(--ink-panel) !important;
     color: var(--paper-hi) !important;
     transform: translateY(-2px);
+}
+
+button.modal-close {
+    background: var(--paper-hi) !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+}
+button.modal-close:hover {
+    background: var(--cinnabar) !important;
+    color: var(--paper-hi) !important;
+    transform: none;
+}
+div:has(> button.diff-btn) {
+    flex-wrap: wrap !important;
+}
+button.diff-btn {
+    background: transparent !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: none !important;
+    white-space: nowrap !important;
+    width: auto !important;
+    flex: 0 0 auto;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 12px !important;
+}
+button.diff-btn[aria-pressed="true"],
+button.diff-btn.active {
+    background: var(--ink) !important;
+    color: var(--paper-hi) !important;
+    border-color: var(--ink) !important;
 }
 
 .btn-secondary, button.secondary, .ghost, .example-btn {

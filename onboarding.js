@@ -467,9 +467,5 @@
 
     const tour = createTour(tips, storageKey);
     insertFlowGuide(projectId, tips, (force) => tour.start(force), storageKey);
-
-    if (!safeGetItem(storageKey)) {
-      setTimeout(() => tour.start(false), 700);
-    }
   });
 })();

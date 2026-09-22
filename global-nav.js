@@ -103,7 +103,7 @@
         @keyframes gnavFade { from { opacity: 0 } to { opacity: 1 } }
         .gnav-panel {
             width: 100%; max-width: 560px; max-height: 70vh;
-            background: var(--card, #fff); color: var(--ink, #1a1a1a);
+            background: var(--card, #F7EFDA); color: var(--ink, #3A2E20);
             border-radius: 6px; border: 1px solid var(--line, #D3C4A0); box-shadow: 0 16px 40px rgba(36,27,17,0.28);
             display: flex; flex-direction: column; overflow: hidden;
             animation: gnavSlide .2s ease-out;

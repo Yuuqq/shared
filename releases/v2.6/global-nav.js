@@ -95,7 +95,7 @@
         .gnav-fab:focus-visible { outline: 3px solid var(--accent, #c7491f); outline-offset: 3px; }
         .gnav-overlay {
             position: fixed; inset: 0; z-index: 9999;
-            background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+            background: rgba(36, 27, 17, 0.46);
             display: none; align-items: flex-start; justify-content: center;
             padding: 80px 16px 16px; animation: gnavFade .15s ease-out;
         }
@@ -103,8 +103,8 @@
         @keyframes gnavFade { from { opacity: 0 } to { opacity: 1 } }
         .gnav-panel {
             width: 100%; max-width: 560px; max-height: 70vh;
-            background: var(--card, #fff); color: var(--ink, #1a1a1a);
-            border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            background: var(--card, #F7EFDA); color: var(--ink, #3A2E20);
+            border-radius: 6px; border: 1px solid var(--line, #D3C4A0); box-shadow: 0 16px 40px rgba(36,27,17,0.28);
             display: flex; flex-direction: column; overflow: hidden;
             animation: gnavSlide .2s ease-out;
         }
@@ -117,7 +117,7 @@
         .gnav-list { flex: 1; overflow-y: auto; padding: 4px; }
         .gnav-item {
             display: flex; align-items: center; gap: 12px;
-            padding: 10px 14px; border-radius: 8px; cursor: pointer;
+            padding: 10px 14px; border-radius: 4px; cursor: pointer;
             font-size: 14px; line-height: 1.4;
         }
         .gnav-item.active, .gnav-item:hover {
@@ -133,7 +133,7 @@
         .gnav-title { font-weight: 600; }
         .gnav-desc { font-size: 12px; color: var(--ink-secondary, #888); }
         .gnav-cat {
-            font-size: 11px; padding: 2px 8px; border-radius: 999px;
+            font-size: 11px; padding: 2px 8px; border-radius: 4px;
             background: var(--accent-light, rgba(199,73,31,0.08));
             color: var(--accent, #c7491f); white-space: nowrap;
         }
