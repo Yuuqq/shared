@@ -225,13 +225,13 @@
 .flow-guide-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .flow-guide-btn{border:1px solid var(--line,#D3C4A0);background:var(--card,#F7EFDA);color:var(--ink,#3A2E20);padding:8px 12px;border-radius:4px;cursor:pointer;font:inherit;min-height:44px}
 .flow-guide-btn.primary{background:var(--ink,#3A2E20);border-color:var(--ink,#3A2E20);color:var(--paper-hi,#F7EFDA)}
-.onboarding-ring{position:fixed;border:2px solid var(--accent,#c7491f);border-radius:10px;z-index:99997;pointer-events:none;animation:onboardingPulse 1.5s ease infinite;box-shadow:0 0 0 9999px rgba(15,23,42,.08)}
-.onboarding-tip{position:fixed;z-index:99998;background:var(--card,#fff);border:1px solid var(--line,#ddd);border-radius:12px;padding:12px 14px;box-shadow:0 16px 40px rgba(0,0,0,.2);width:min(320px,calc(100vw - 24px));color:var(--ink,#111827);font:14px/1.55 var(--font-sans,system-ui)}
+.onboarding-ring{position:fixed;border:2px solid var(--cinnabar,#A2402F);border-radius:6px;z-index:99997;pointer-events:none;animation:onboardingPulse 1.5s ease infinite;box-shadow:0 0 0 9999px rgba(36,27,17,.12)}
+.onboarding-tip{position:fixed;z-index:100000 !important;background:var(--paper-hi,#F7EFDA) !important;border:1px solid var(--line,#D3C4A0) !important;border-radius:6px !important;padding:12px 14px;box-shadow:0 16px 40px rgba(36,27,17,.28);width:min(320px,calc(100vw - 24px));box-sizing:border-box;color:var(--ink,#3A2E20) !important;font:14px/1.55 var(--hei, "Noto Sans SC", sans-serif)}
 .onboarding-tip-title{font-weight:700;margin-bottom:6px}
-.onboarding-tip-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px}
-.onboarding-tip-actions button{border:none;border-radius:8px;padding:7px 12px;cursor:pointer;font:inherit}
-.onboarding-tip-actions .ghost{background:transparent;color:var(--ink-secondary,#6b7280)}
-.onboarding-tip-actions .primary{background:var(--accent,#c7491f);color:#fff}
+.onboarding-tip-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;margin-top:10px}
+.onboarding-tip-actions button{border-radius:4px !important;padding:6px 12px !important;min-height:36px !important;width:auto !important;max-width:100% !important;cursor:pointer;font:inherit;animation:none !important;box-shadow:none !important;white-space:nowrap}
+.onboarding-tip-actions .ghost{background:transparent !important;color:var(--ink,#3A2E20) !important;border:1px solid var(--line,#D3C4A0) !important}
+.onboarding-tip-actions .primary{background:var(--ink,#3A2E20) !important;color:var(--paper-hi,#F7EFDA) !important;border:1px solid var(--ink,#3A2E20) !important}
 @keyframes onboardingPulse{0%,100%{box-shadow:0 0 0 0 rgba(199,73,31,.22),0 0 0 9999px rgba(15,23,42,.08)}50%{box-shadow:0 0 0 8px rgba(199,73,31,0),0 0 0 9999px rgba(15,23,42,.08)}}
 @media (max-width:640px){
   .flow-guide summary{padding:12px 14px}
@@ -377,15 +377,42 @@
 
           const width = tooltip.offsetWidth;
           const height = tooltip.offsetHeight;
-          const topCandidate = rect.bottom + 12;
-          const top =
-            topCandidate + height <= window.innerHeight - 12
-              ? topCandidate
-              : Math.max(12, rect.top - height - 12);
-          const left = clamp(rect.left, 12, window.innerWidth - width - 12);
+          const maxLeft = Math.max(12, window.innerWidth - width - 12);
+          const candidates = [
+            { top: rect.bottom + 12, left: clamp(rect.left, 12, maxLeft) },
+            { top: Math.max(12, rect.top - height - 12), left: clamp(rect.left, 12, maxLeft) },
+            { top: 16, left: maxLeft },
+            { top: 16, left: 16 },
+            { top: Math.max(16, window.innerHeight - height - 128), left: maxLeft },
+            { top: Math.max(16, window.innerHeight - height - 128), left: 16 }
+          ];
 
-          tooltip.style.top = `${top}px`;
-          tooltip.style.left = `${left}px`;
+          function overlapArea(top, left) {
+            const box = { left, top, right: left + width, bottom: top + height };
+            let area = 0;
+            for (const el of document.querySelectorAll("button, a, input, textarea, select")) {
+              if (tooltip.contains(el) || el === target || target.contains(el)) continue;
+              const r = el.getBoundingClientRect();
+              if (r.width < 4 || r.height < 4) continue;
+              const ix = Math.min(box.right, r.right) - Math.max(box.left, r.left);
+              const iy = Math.min(box.bottom, r.bottom) - Math.max(box.top, r.top);
+              if (ix > 6 && iy > 6) area += ix * iy;
+            }
+            return area;
+          }
+
+          let spot = candidates[0];
+          let best = Infinity;
+          for (const item of candidates) {
+            const area = overlapArea(item.top, item.left);
+            if (area < best) {
+              best = area;
+              spot = item;
+            }
+            if (area === 0) break;
+          }
+          tooltip.style.top = `${spot.top}px`;
+          tooltip.style.left = `${spot.left}px`;
         }
 
         function scheduleReposition() {

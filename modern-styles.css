@@ -301,6 +301,14 @@ summary {
     align-items: center;
 }
 
+/* 使用说明：副标题跟在标题下面，不要被撑到卡片对侧 */
+.flow-guide summary {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+}
+
 .tab, [role="tab"] {
     flex: 0 0 auto;
 }
