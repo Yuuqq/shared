@@ -415,7 +415,7 @@ button[aria-label*="导航"],
 
 @media (max-width: 768px) {
     body {
-        padding: 12px 12px 120px !important;
+        padding: 12px 68px 120px 12px !important;
     }
     .hero {
         outline-offset: 3px;

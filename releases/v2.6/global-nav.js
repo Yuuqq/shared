@@ -83,11 +83,13 @@
             right: calc(16px + env(safe-area-inset-right, 0px));
             bottom: calc(16px + env(safe-area-inset-bottom, 0px));
             z-index: 9998;
-            width: 44px; height: 44px; border-radius: 50%; border: none;
-            background: var(--accent, #c7491f); color: #fff; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-sizing: border-box;
+            width: 44px !important; height: 44px !important; padding: 0 !important; border-radius: 4px; border: 1.5px solid var(--cinnabar, #A2402F);
+            background: var(--paper-hi, #F7EFDA) !important; color: var(--cinnabar, #A2402F) !important; cursor: pointer;
+            box-shadow: 0 2px 14px rgba(107,90,68,0.16);
             display: flex; align-items: center; justify-content: center;
-            font-size: 18px; transition: transform .2s, box-shadow .2s;
+            font-size: 12px !important; line-height: 1; letter-spacing: 0; font-family: var(--hei, "Noto Sans SC", sans-serif);
+            transition: transform .2s, box-shadow .2s;
         }
         .gnav-fab:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(0,0,0,0.28); }
         .gnav-fab:focus-visible { outline: 3px solid var(--accent, #c7491f); outline-offset: 3px; }
@@ -158,6 +160,7 @@
     document.head.appendChild(styleEl);
 
     const fab = document.createElement("button");
+    fab.type = "button";
     fab.className = "gnav-fab";
     fab.setAttribute("aria-label", "打开 51 工具快速导航 (⌘K)");
     fab.innerHTML = "⌘K";
