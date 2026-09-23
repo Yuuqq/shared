@@ -39,17 +39,18 @@
     const bar = document.createElement("div");
     bar.id = "kbdHintBar";
     bar.style.cssText = [
-      "position:fixed", "bottom:max(8px, env(safe-area-inset-bottom))", "left:8px", "right:8px", "z-index:9998",
-      "background:rgba(0,0,0,0.82)", "color:#fff", "font-size:13px",
-      "padding:6px 16px", "display:flex", "align-items:center",
-      "gap:16px", "justify-content:center", "transition:all .2s ease",
-      "backdrop-filter:blur(8px)", "font-family:var(--font-mono, monospace)",
-      "border-radius:999px", "box-shadow:0 8px 22px rgba(0,0,0,0.22)"
+      "position:fixed", "bottom:max(12px, env(safe-area-inset-bottom))", "right:76px", "z-index:30",
+      "background:#241B11", "color:#F7EFDA", "font-size:13px",
+      "display:flex", "align-items:center", "gap:12px",
+      "font-family:var(--font-mono, monospace)",
+      "border-radius:6px", "border:1px solid #5C4A32", "box-shadow:0 8px 22px rgba(0,0,0,0.22)"
     ].join(";");
 
-    const label = document.createElement("span");
-    label.textContent = "⌨️";
-    label.style.cssText = "cursor:pointer;font-size:16px;";
+    const label = document.createElement("button");
+    label.type = "button";
+    label.textContent = "快捷键";
+    label.setAttribute("aria-expanded", "false");
+    label.style.cssText = "cursor:pointer;font:inherit;color:inherit;background:transparent;border:0;min-width:44px;min-height:44px;padding:0 10px;";
     bar.appendChild(label);
 
     const content = document.createElement("span");
@@ -60,19 +61,17 @@
     bar.appendChild(content);
 
     // Toggle
-    let collapsed = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+    let collapsed = true;
     function renderState() {
-      collapsed = !collapsed;
       content.style.display = collapsed ? "none" : "inline";
-      bar.style.justifyContent = collapsed ? "center" : "center";
-      bar.style.padding = collapsed ? "6px 10px" : "6px 16px";
-      bar.style.opacity = collapsed ? "0.72" : "1";
-      label.textContent = collapsed ? "⌨️ 快捷键" : "⌨️";
+      bar.style.width = collapsed ? "auto" : "max-content";
+      bar.style.maxWidth = "calc(100vw - 96px)";
+      label.setAttribute("aria-expanded", collapsed ? "false" : "true");
     }
-    collapsed = !collapsed;
     renderState();
 
     label.addEventListener("click", () => {
+      collapsed = !collapsed;
       renderState();
     });
 

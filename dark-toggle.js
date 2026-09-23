@@ -188,6 +188,29 @@
   function ensureCopyrightFooter() {
     if (!document.body || document.querySelector("[data-shared-copyright]")) return;
 
+    var contrastFix = document.getElementById("sharedDarkTextFix");
+    if (!contrastFix) {
+      contrastFix = document.createElement("style");
+      contrastFix.id = "sharedDarkTextFix";
+      contrastFix.textContent = [
+        'html[data-theme="dark"] .lead,',
+        'html[data-theme="dark"] .subtle,',
+        'html[data-theme="dark"] .note,',
+        'html[data-theme="dark"] .privacy,',
+        'html[data-theme="dark"] .hint,',
+        'html[data-theme="dark"] .help-text,',
+        'html[data-theme="dark"] label,',
+        'html[data-theme="dark"] summary,',
+        'html[data-theme="dark"] .bg-label,',
+        'html[data-theme="dark"] .step,',
+        'html[data-theme="dark"] .step h2,',
+        'html[data-theme="dark"] .step p { color: #F7EFDA !important; }',
+        'html[data-theme="dark"] .step,',
+        'html[data-theme="dark"] .graphic { background: #2F2618 !important; color: #F7EFDA !important; }'
+      ].join("");
+      document.head.appendChild(contrastFix);
+    }
+
     var style = document.getElementById("sharedCopyrightStyle");
     if (!style) {
       style = document.createElement("style");
