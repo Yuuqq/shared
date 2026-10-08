@@ -14,8 +14,8 @@
 .pedagogy-toggle:hover{background:linear-gradient(135deg,rgba(199,73,31,.14),rgba(199,73,31,.05))}
 .pedagogy-toggle .arrow{transition:transform .25s;font-size:.7rem}
 .pedagogy-panel.open .pedagogy-toggle .arrow{transform:rotate(90deg)}
-.pedagogy-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
-.pedagogy-panel.open .pedagogy-body{max-height:4000px}
+.pedagogy-body{display:none}
+.pedagogy-panel.open .pedagogy-body{display:block}
 .pedagogy-content{padding:14px 20px 20px}
 .pedagogy-section{margin-bottom:16px}
 .pedagogy-section h3{font-size:.85rem;font-weight:700;color:var(--accent,#c7491f);margin:0 0 6px;display:flex;align-items:center;gap:6px}
