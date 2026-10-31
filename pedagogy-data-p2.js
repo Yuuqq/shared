@@ -631,12 +631,7 @@
     toggle.setAttribute("aria-expanded", open);
   });
 
-  /* ── 插入到 DOM ── */
+  /* ── 插入到 DOM：放在工具主界面之后，避免首屏被教材占满 ── */
   const app = document.querySelector(".app") || document.querySelector("main") || document.body;
-  const firstSection = app.querySelector("h1, h2, header, .hero");
-  if (firstSection && firstSection.nextSibling) {
-    firstSection.parentNode.insertBefore(panel, firstSection.nextSibling);
-  } else {
-    app.prepend(panel);
-  }
+  app.appendChild(panel);
 })();
