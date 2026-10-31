@@ -1,5 +1,5 @@
 /**
- * 🔍 Ctrl+K 全局命令面板 (Command Palette)
+ * Ctrl+K 全局命令面板 (Command Palette)
  * 引入方式: <script src="../shared/cmd-palette.js" defer></script>
  *
  * 功能：
@@ -175,15 +175,15 @@
     overlay.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding-top:15vh;font-family:var(--font-sans,system-ui)";
 
     const box = document.createElement("div");
-    box.style.cssText = "background:var(--card,#fff);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,0.3);width:min(520px,90vw);max-height:60vh;overflow:hidden;display:flex;flex-direction:column";
+    box.style.cssText = "background:var(--card,#F7EFDA);border-radius:6px;box-shadow:0 16px 48px rgba(36,27,17,0.28);width:min(520px,90vw);max-height:60vh;overflow:hidden;display:flex;flex-direction:column";
 
     const header = document.createElement("div");
     header.style.cssText = "padding:12px 16px;border-bottom:1px solid var(--line,#e0e0e0);display:flex;align-items:center;gap:8px";
-    header.innerHTML = '<span style="opacity:0.5;font-size:14px">🔍</span>';
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = "搜索工具…  (输入名称或编号)";
-    input.style.cssText = "flex:1;border:none;outline:none;font-size:15px;background:transparent;color:var(--ink,#1a1a1a);font-family:inherit";
+    input.setAttribute("aria-label", "搜索工具");
+    input.style.cssText = "flex:1;border:none;font-size:15px;background:transparent;color:var(--ink,#3A2E20);font-family:inherit";
     header.appendChild(input);
     const badge = document.createElement("kbd");
     badge.textContent = "ESC";

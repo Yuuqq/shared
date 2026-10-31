@@ -155,7 +155,7 @@
       "border:1.5px solid var(--cinnabar,#A2402F)", "background:var(--paper-hi,#F7EFDA)",
       "color:var(--ink)", "font-size:18px", "cursor:pointer",
       "display:flex", "align-items:center", "justify-content:center",
-      "box-shadow:0 2px 8px rgba(0,0,0,0.15)", "transition:all .2s ease",
+      "box-shadow:0 2px 8px rgba(36,27,17,0.16)", "transition:transform .2s ease,background-color .2s ease,color .2s ease,border-color .2s ease",
       "line-height:1", "padding:0"
     ].join(";");
 

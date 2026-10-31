@@ -15,7 +15,24 @@ the [`Yuuqq/P00`–`Yuuqq/P50`](https://github.com/Yuuqq) series.
 
 | File | Purpose |
 |---|---|
+| [`design.md`](./design.md) | **Locked** Hallmark system for every P-tool (羊皮纸 / 朱砂). Change it on purpose. |
 | `design-tokens.css` | Semantic colors, type scale (`type-scale-v22`), spacing, motion tokens. Includes dark-mode variants and CJK-friendly defaults. |
+| `modern-styles.css` | Shared surface polish loaded after the tokens. Does not replace a tool's layout. |
+| [`tool-chrome.css`](./tool-chrome.css) | Shared chrome: wordmark, closed 「如何使用」 teach panel, one-line data-boundary footer. No emoji. |
+
+### Hallmark depth
+
+`design.md` is locked. This pass is **restyle**: colour, type, radius, motion, and chrome come from the shared layer; each tool keeps its own workspace layout and wiring. Do not treat `tool-chrome.css` as a new brand.
+
+Load chrome after the tokens (and after `modern-styles.css` if the tool uses it):
+
+```html
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<link rel="stylesheet" href="../shared/modern-styles.css">
+<link rel="stylesheet" href="../shared/tool-chrome.css">
+```
+
+Paste the markup from [`docs/chrome-snippet.html`](./docs/chrome-snippet.html) near the top of `<body>`, and set `data-tool-id`. The teach `<details>` stays closed. Nav and command-palette titles are text-only (`global-nav.js` does not prefix tool names with emoji).
 
 ### Behavior layer (6 globally-injected UX modules)
 
@@ -116,6 +133,7 @@ For breaking-change migration notes, see
 | Document | What it covers |
 |---|---|
 | [README.md](./README.md) | This file. Library overview + how to consume. |
+| [design.md](./design.md) | Locked Hallmark system (tokens, chrome, motion, floor). |
 | [CHANGELOG.md](./CHANGELOG.md) | Per-version history (Keep a Changelog format). |
 | [ROADMAP.md](./ROADMAP.md) | 12-month plan (2026.05 – 2027.04), 4 quarters × 4 work items each. |
 | [MIGRATION.md](./MIGRATION.md) | Breaking-change upgrade guides between MAJOR versions. |

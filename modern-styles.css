@@ -1,7 +1,10 @@
+/* Hallmark · v2.0.0 · JOU toolbox surface · theme: custom (羊皮纸手稿) · genre: editorial · redesign: restyle · scope: app */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V3 · weakest: V, each tool keeps its own layout */
 /**
  * 羊皮纸手稿风 — CSS Lab 设计语言（教学门户方言）
  * 活标本：https://jou2327a.aisbest.eu.cc/parchment.css
  * 在 design-tokens 之后、本地 styles.css 之前引入；关键视觉用 !important 压过蓝/绿渐变、大圆角与 Inter。边缘：内边距、圆角≤6px、焦点环、窄屏按钮、浮动钮让路。
+ * 深度是 restyle：本文件不重排各工具工作台。锁定说明见 design.md。
  */
 
 :root {
@@ -27,6 +30,11 @@
     --cinnabar: #A2402F;
     --gold: #8C6A2F;
     --paper-hi: #F7EFDA;
+    --accent-ink: #F7EFDA;
+    --focus: var(--cinnabar);
+    --rule-hair: 1px;
+    --print-paper: #f7f3e8;
+    --print-ink: #1a140e;
     --paper-3: #EFE4C6;
     --ink-panel: #241B11;
 }
@@ -431,8 +439,10 @@ img, video {
 }
 
 :focus-visible {
-    outline: 2px solid var(--cinnabar) !important;
+    outline: 2px solid var(--focus, var(--cinnabar)) !important;
     outline-offset: 2px !important;
+    /* 环不参与过渡；压过后加载的简写 transition */
+    transition-property: background-color, color, border-color, transform, opacity, filter !important;
 }
 
 ::selection {
@@ -490,11 +500,24 @@ button[aria-label*="导航"],
 }
 
 @media print {
-    body { background: #fff !important; padding: 0 !important; }
+    :root {
+        --bg: var(--print-paper) !important;
+        --card: var(--print-paper) !important;
+        --ink: var(--print-ink) !important;
+        --paper: var(--print-paper) !important;
+        --paper-hi: var(--print-paper) !important;
+        --paper-3: var(--print-paper) !important;
+    }
+    body {
+        background: var(--print-paper) !important;
+        color: var(--print-ink) !important;
+        padding: 0 !important;
+    }
     body::before, body::after { display: none !important; }
     .hero, .card, .panel {
         outline: none !important;
         box-shadow: none !important;
-        border: 1px solid #ccc !important;
+        background: var(--print-paper) !important;
+        border: 1px solid color-mix(in srgb, var(--print-ink) 22%, var(--print-paper)) !important;
     }
 }

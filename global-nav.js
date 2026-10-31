@@ -18,7 +18,7 @@
 
     /* ---------- 工具清单（51 个）---------- */
     const TOOLS = [
-        { id: "P00", slug: "P00-dashboard", title: "🏠 工具集导航", desc: "总入口", category: "AI 教学" },
+        { id: "P00", slug: "P00-dashboard", title: "工具集导航", desc: "总入口", category: "AI 教学" },
         { id: "P01", slug: "P01-model-compare", title: "模型对比器", desc: "并排对比 LLM 输出", category: "AI 教学" },
         { id: "P02", slug: "P02-offline-sentiment", title: "离线情感分析仪", desc: "纯前端中文情感", category: "AI 教学" },
         { id: "P03", slug: "P03-webspeech-transcriber", title: "WebSpeech 转录器", desc: "浏览器语音转文字", category: "AI 教学" },
@@ -89,10 +89,10 @@
             box-shadow: 0 2px 14px rgba(107,90,68,0.16);
             display: flex; align-items: center; justify-content: center;
             font-size: 12px !important; line-height: 1; letter-spacing: 0; font-family: var(--hei, "Noto Sans SC", sans-serif);
-            transition: transform .2s, box-shadow .2s;
+            transition: transform .2s;
         }
-        .gnav-fab:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(0,0,0,0.28); }
-        .gnav-fab:focus-visible { outline: 3px solid var(--accent, #c7491f); outline-offset: 3px; }
+        .gnav-fab:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(36,27,17,0.28); }
+        .gnav-fab:focus-visible { outline: 3px solid var(--focus, var(--accent, #A2402F)); outline-offset: 3px; transition: none; }
         .gnav-overlay {
             position: fixed; inset: 0; z-index: 9999;
             background: rgba(36, 27, 17, 0.46);
@@ -110,9 +110,14 @@
         }
         @keyframes gnavSlide { from { transform: translateY(-12px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
         .gnav-search {
-            border: none; outline: none; padding: 16px 20px; font-size: 16px;
-            background: transparent; color: inherit; border-bottom: 1px solid var(--line, #ddd);
+            border: none; padding: 16px 20px; font-size: 16px;
+            background: transparent; color: inherit; border-bottom: 1px solid var(--line, #D3C4A0);
             font-family: inherit;
+        }
+        .gnav-search:focus-visible {
+            outline: 3px solid var(--focus, var(--accent, #A2402F));
+            outline-offset: -3px;
+            transition: none;
         }
         .gnav-list { flex: 1; overflow-y: auto; padding: 4px; }
         .gnav-item {
@@ -139,8 +144,8 @@
         }
         .gnav-section {
             padding: 6px 14px; font-size: 11px; font-weight: 600;
-            color: var(--ink-secondary, #888); text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: var(--ink-secondary, #6E5B41); text-transform: none;
+            letter-spacing: 0;
         }
         .gnav-empty { padding: 24px; text-align: center; color: var(--ink-secondary, #888); }
         .gnav-footer {
