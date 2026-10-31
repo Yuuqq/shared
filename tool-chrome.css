@@ -1,0 +1,80 @@
+/* Hallmark · v2.0.0 · JOU toolbox chrome · theme: custom (羊皮纸手稿) · genre: editorial · redesign: restyle · scope: app */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V3 · weakest: V, chrome is intentionally identical across tools */
+/* Use after design-tokens.css and modern-styles.css. No emoji. Teach panel default closed. */
+
+.tool-chrome {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin: 0 0 var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: var(--rule-hair, 1px) solid var(--line);
+}
+
+.tool-chrome__mark {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.tool-chrome__id {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--ink-secondary);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.tool-teach {
+  margin: 0 0 var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--card);
+  border: var(--rule-hair, 1px) solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.tool-teach > summary {
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--ink);
+  list-style: none;
+}
+
+.tool-teach > summary::-webkit-details-marker { display: none; }
+
+.tool-teach[open] > summary {
+  margin-bottom: var(--space-sm);
+  border-bottom: var(--rule-hair, 1px) solid var(--line);
+  padding-bottom: var(--space-xs);
+}
+
+.tool-footer {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair, 1px) solid var(--line);
+  font-size: 0.85rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+.tool-footer a {
+  color: var(--accent);
+}
+
+@media print {
+  :root {
+    --print-paper: #f7f3e8;
+    --print-ink: #1a140e;
+  }
+  body {
+    background: var(--print-paper) !important;
+    color: var(--print-ink) !important;
+  }
+  .tool-chrome,
+  .tool-teach,
+  .tool-footer { break-inside: avoid; }
+}

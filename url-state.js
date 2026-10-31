@@ -6,7 +6,7 @@
  *   window.saveStateToURL(data)  — 将 JSON 编码到 URL hash
  *   window.loadStateFromURL()    — 从 URL hash 解码 JSON
  *
- * 同时在页面内注入"📋 复制分享链接"按钮。
+ * 同时在页面内注入「复制分享链接」按钮。
  */
 (function () {
   const HASH_PREFIX = "#state=";
@@ -219,7 +219,7 @@
     btn.id = "shareStateBtn";
     btn.type = "button";
     btn.className = "btn-secondary ghost";
-    btn.textContent = "📋 复制分享链接";
+    btn.textContent = "复制分享链接";
     btn.setAttribute("aria-label", "复制分享链接");
     btn.style.cssText = "font-size:12px;padding:6px 10px;";
 
@@ -244,9 +244,9 @@
         if (ok && window.showToast) {
           window.showToast("分享链接已复制到剪贴板", "success", 2000);
         }
-        btn.textContent = ok ? "✅ 已复制" : "📎 链接已生成";
+        btn.textContent = ok ? "已复制" : "链接已生成";
         setTimeout(() => {
-          btn.textContent = "📋 复制分享链接";
+          btn.textContent = "复制分享链接";
         }, 2000);
       });
     });

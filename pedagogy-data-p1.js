@@ -9,7 +9,7 @@
   /* ── 样式注入 ── */
   const STYLE = document.createElement("style");
   STYLE.textContent = `
-.pedagogy-panel{margin:16px auto;max-width:800px;border:1px solid var(--line,#e0d6cf);border-radius:var(--radius-md,10px);background:var(--card,#fff);overflow:hidden;font-size:.88rem;line-height:1.7;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.pedagogy-panel{margin:16px auto;max-width:800px;border:1px solid var(--line,#D3C4A0);border-radius:var(--radius-md,6px);background:var(--card,#F7EFDA);overflow:hidden;font-size:.88rem;line-height:1.7;box-shadow:0 1px 3px rgba(36,27,17,.06)}
 .pedagogy-toggle{width:100%;padding:14px 20px;background:linear-gradient(135deg,rgba(199,73,31,.08),rgba(199,73,31,.02));border:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:.92rem;font-weight:600;color:var(--ink,#2c2418);text-align:left;transition:background .2s}
 .pedagogy-toggle:hover{background:linear-gradient(135deg,rgba(199,73,31,.14),rgba(199,73,31,.05))}
 .pedagogy-toggle .arrow{transition:transform .25s;font-size:.7rem}
